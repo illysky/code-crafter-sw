@@ -5,6 +5,28 @@ import sys
 import os
 import math
 
+
+##################################################################
+# Variables 
+##################################################################
+now = datetime.now().strftime("%m/%d/%Y %H:%M:%S")
+register = {}; 
+fields = []; 
+stage = 0;  
+reg_addr = ""
+reg_addr_width = 1
+reg_addr_width_max = 1
+
+reg_name = ""
+reg_rw = ""
+bitfields = []
+
+typedefs = ""       # typedefs of the driver
+prototypes = ""     # prototypes of the driver 
+functions = ""      # functions of the driver
+stubs = ""          # stubs of code for the user to add to
+address_size = ""
+
 # *******************************************************************
 # * @brief: Gets a snippet of code from the main snippet file
 # ********************************************************************
@@ -153,27 +175,9 @@ def _create_block (driver, reg, addr, width, bitfields, write, read):
 if __name__ == "__main__":
 ##################################################################
   
-    now = datetime.now().strftime("%m/%d/%Y %H:%M:%S")
-    register = {}; 
-    fields = []; 
-    stage = 0;  
-    reg_addr = ""
-    reg_addr_width = 1
-    reg_addr_width_max = 1
-    
-    reg_name = ""
-    reg_rw = ""
-    bitfields = []
 
-    # This is where the snippets get stored
-    typedefs = ""       # typedefs of the driver
-    prototypes = ""     # prototypes of the driver 
-    functions = ""      # functions of the driver
-    stubs = ""          # stubs of code for the user to add to
-    address_size = ""
     try: 
         driver_name = sys.argv[1]; 
-
     except:
         print("Error: Missing driver name")
         exit()
