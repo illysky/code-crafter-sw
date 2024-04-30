@@ -1,0 +1,507 @@
+# Key-value pairs
+device: BQ25792
+manufacturer: TI
+version: v1.0.0
+author: Dominic Moffat
+copyright: Copyright (c) 2023 Illysky Ltd
+bus: i2c
+
+registers:
+  - name: Minimal System Voltage
+    address: 0x00
+    bitfield:
+    - RESERVED:2
+    - VSYSMIN:6
+
+  - name: Charge Voltage Limit 
+    address: 0x00
+    bitfield:
+    - RESERVED:5
+    - VREG:11
+    
+  - name: Charge Current Limit 
+    address: 0x00
+    bitfield:
+    - RESERVED:7
+    - ICHG:9
+    
+  - name: Input Voltage Limit 
+    address: 0x05
+    bitfield:
+    - VINDPM:8
+
+  - name: Input Current Limit
+    address: 0x06
+    bitfield:
+    - RESERVED:7
+    - IINDPM:9
+
+  - name: Precharge Control 
+    address: 0x08
+    bitfield:
+    - VBAT_LOWV:2
+    - IPRECHG:6
+
+  - name: Termination Control 
+    address: 0x09
+    bitfield:
+    - RESERVED:1
+    - REG_RST:1
+    - RESERVED:1
+    - ITERM:5
+
+  - name: Recharge Control
+    address: 0x0A
+    bitfield: 
+    - CELL:2
+    - TRECHG:2
+    - VRECHG:4
+
+  - name: VOTG
+    address: 0x0B
+    bitfield:
+    - RESERVED:5
+    - VOTG:11
+
+  - name: IOTG Regulation 
+    address: 0x0D
+    bitfield: 
+    - PRECHG_TMR:1
+    - IOTG:7
+    
+  - name: Timer Control
+    address: 0x0E
+    bitfield:
+    - TOPOFF_TMR:2
+    - EN_TRICHG_TMR:1
+    - EN_PRECHG_TMR:1
+    - EN_CHG_TMR:1
+    - CHG_TMR:2
+    - TMR2X_EN:1
+
+
+  - name: Charger Control 0
+    address: 0x0F
+    bitfield:
+    - EN_AUTO_IBATDIS:1
+    - FORCE_IBATDIS:1
+    - EN_CHG:1
+    - EN_ICO:1
+    - FORCE_ICO:1
+    - EN_HIZ:1
+    - EN_TERM:1
+    - RESERVED:1
+    
+  - name: Charger Control 1
+    address: 0x10
+    bitfield:
+    - RESERVED:2
+    - VAC_OVP:2
+    - WD_RST:1
+    - WATCHDOG:3
+
+  - name: Charger Control 2
+    address: 0x11
+    bitfield: 
+    - FORCE_INDET:1
+    - AUTO_INDET_EN:1
+    - EN_12V:1
+    - EN_9V:1
+    - HVDCP_EN:1
+    - SDRV_CTRL:2
+    - SDRV_DLY:1
+
+  - name: Charger Control 3
+    address: 0x12
+    bitfield:
+    - DIS_ACDRV:1
+    - EN_OTG:1
+    - PFM_OTG_DIS:1
+    - PFM_FWD_DIS:1
+    - WKUP_DLY:1
+    - DIS_LDO:1
+    - DIS_OTG_OOA:1
+    - DIS_FWD_OOA:1
+
+  - name: Charger Control 4
+    address: 0x13
+    bitfield:
+    - EN_ACDRV2:1
+    - EN_ACDRV1:1
+    - PWM_FREQ:1
+    - DIS_STAT:1
+    - DIS_VSYS_SHORT:1
+    - DIS_VOTG_UVP:1
+    - FORCE_VINDPM_DET:1
+    - EN_IBUS_OCP:1
+    
+  - name: Charger Control 5
+    address: 0x14
+    bitfield:
+    - SFET_PRESENT:1
+    - RESERVED:1
+    - EN_IBAT:1
+    - IBAT_REG:2
+    - EN_IINDPM:1
+    - EN_EXTILIM:1
+    - EN_BATOC:1
+
+  - name: Temperature Control
+    address: 0x16
+    bitfield:
+    - TREG:2
+    - TSHUT:2
+    - VBUS_PD_EN:1
+    - VAC1_PD_EN:1
+    - VAC2_PD_EN:1
+    - RESERVED:1
+
+  - name: NTC Control 0
+    address: 0x17
+    bitfield:
+    - JEITA_VSET:3
+    - JEITA_ISETH:2
+    - JEITA_ISETC:2
+    - RESERVED:1
+
+
+  - name: NTC Control 0
+    address: 0x18
+    bitfield:
+    - TS_COOL:2
+    - TS_WARM:2
+    - BHOT:2
+    - BCOLD:1
+    - TS_IGNORE:1
+    
+  - name: ICO Current Limit
+    address: 0x19
+    bitfield:
+    - RESERVED:7
+    - ICO_ILIM:9
+
+  - name: Charder Status 0
+    address: 0x1B
+    bitfield:
+    - IINDPM_STAT:1
+    - VINDPM_STAT:1
+    - WD_STAT:1
+    - POORSRC_STAT:1
+    - PG_STAT:1
+    - AC2_PRESENT_STAT:1
+    - AC1_PRESENT_STAT:1
+    - VBUS_PRESENT_STAT:1
+
+  - name: Charger Status 1
+    address: 0x1C
+    bitfield: 
+    - CHG_STAT:3
+    - VBUS_STAT:4
+    - BC12_DONE_STAT:1
+
+  - name: Charger Status 2
+    address: 0x1D
+    bitfield:
+    - ICO_STAT:2
+    - RESERVED:3
+    - TREG_STAT:1
+    - DPDM_STAT:1
+    - VBAT_PRESENT_STAT:1
+
+  - name: Charger Status 3
+    address: 0x1E
+    bitfield:
+    - ACRB2_STAT:1
+    - ACRB1_STAT:1
+    - ADC_DONE_STAT:1
+    - VSYS_STAT:1
+    - CHG_TMR_STAT:1
+    - TRICHG_TMR_STAT:1
+    - PRECHG_TMR_STAT:1
+    - RESERVED:1
+
+
+  - name: Charger Status 4
+    address: 0x1F
+    bitfield:
+    - RESERVED:3
+    - VBATOTG_LOW_STAT:1
+    - TS_COLD_STAT:1
+    - TS_COOL_STAT:1
+    - TS_WARM_STAT:1
+    - TS_HOT_STAT:1
+    
+  - name: Fault Status 0 
+    address: 0x20
+    bitfield:
+    - IBAT_REG_STAT:1
+    - VBUS_OVP_STAT:1
+    - VBAT_OVP_STAT:1
+    - IBUS_OCP_STAT:1
+    - IBAT_OCP_STAT:1
+    - CONV_OCP_STAT:1
+    - VAC2_OVP_STAT:1
+    - VAC1_OVP_STAT:1
+
+  - name: Fault Status 1
+    address: 0x21
+    bitfield:
+    - VSYS_SHORT_STAT:1
+    - VSYS_OVP_STAT:1
+    - OTG_OVP_STAT:1
+    - OTG_UVP_STAT:1
+    - RESERVED:1
+    - TSHUT_STAT:1
+    - RESERVED:2
+    
+  - name: Charger Flag 0
+    address: 0x21
+    bitfield: 
+    - IINDPM_FLAG:1
+    - VINDPM_FLAG:1
+    - WD_FLAG:1
+    - POORSRC_FLAG:1
+    - PG_FLAG:1
+    - AC2_PRESENT_FLAG:1
+    - AC1_PRESENT_FLAG:1
+    - VBUS_PRESENT_FLAG:1
+
+  - name: Charger Flag 1
+    address: 0x23
+    bitfield:
+    - CHG_FLAG:1
+    - ICO_FLAG:1
+    - RESERVED:1
+    - VBUS_FLAG:1
+    - RESERVED:1
+    - TREG_FLAG:1
+    - VBAT_PRESENT_FLAG:1
+    - BC12_DONE_FLAG:1
+
+  - name: Charger Flag 2
+    address: 0x24
+    bitfield:
+    - RESERVED:1
+    - DPDM_DONE_FLAG:1
+    - ADC_DONE_FLAG:1
+    - VSYS_FLAG:1
+    - CHG_TMR_FLAG:1
+    - TRICHG_TMR_FLAG:1
+    - PRECHG_TMR_FLAG:1
+    - TOPOFF_TMR_FLAG:1
+
+  - name: Charger Flag 2
+    address: 0x24
+    bitfield:
+    - RESERVED:1
+    - DPDM_DONE_FLAG:1
+    - ADC_DONE_FLAG:1
+    - VSYS_FLAG:1
+    - CHG_TMR_FLAG:1
+    - TRICHG_TMR_FLAG:1
+    - PRECHG_TMR_FLAG:1
+    - TOPOFF_TMR_FLAG:1
+  
+  - name: Charger Flag 3
+    address: 0x25
+    bitfield:
+    - RESERVED:3
+    - VBATOTG_LOW_FLAG:1
+    - TS_COLD_FLAG:1
+    - TS_COOL_FLAG:1
+    - TS_WARM_FLAG:1
+    - TS_HOT_FLAG:1
+
+  - name: Fault Flag 0
+    address: 0x26
+    bitfield:  
+    - IBAT_REG_FLAG:1
+    - VBUS_OVP_FLAG:1
+    - VBAT_OVP_FLAG:1
+    - IBUS_OCP_FLAG:1
+    - IBAT_OCP_FLAG:1
+    - CONV_OCP_FLAG:1
+    - VAC2_OVP_FLAG:1
+    - VAC1_OVP_FLAG:1
+
+  - name: Fault Flag 1
+    address: 0x27
+    bitfield: 
+    - VSYS_SHORT_FLAG:1
+    - VSYS_OVP_FLAG:1
+    - OTG_OVP_FLAG:1
+    - OTG_UVP_FLAG:1
+    - RESERVED:1
+    - TSHUT_FLAG:1
+    - RESERVED:2
+
+  - name: Charger Mask 0
+    address: 0x28
+    bitfield:
+    - IINDPM_MASK:1
+    - VINDPM_MASK:1
+    - WD_MASK:1
+    - POORSRC_MASK:1
+    - PG_MASK:1
+    - AC2_PRESENT_MASK:1
+    - AC1_PRESENT_MASK:1
+    - VBUS_PRESENT_MASK:1
+
+  - name: Charger Mask 1
+    address: 0x29
+    bitfield:
+    - CHG_MASK:1
+    - ICO_MASK:1
+    - RESERVED:1
+    - VBUS_MASK:1
+    - RESERVED:1
+    - TREG_MASK:1
+    - VBAT_PRESENT_MASK:1  
+    - BC1_2_DONE_MASK:1
+
+  - name: Charger Mask 2
+    address: 0x2A
+    bitfield:
+    - RESERVED:1
+    - DPDM_DONE_MASK:1
+    - ADC_DONE_MASK:1
+    - VSYS_MASK:1
+    - CHG_TMR_MASK:1
+    - TRICHG_TMR_MASK:1
+    - PRECHG_TMR_MASK:1
+    - TOPOFF_TMR_MASK:1
+
+  - name: Charger Mask 3
+    address: 0x2B
+    bitfield:
+    - RESERVED:3
+    - VBATOTG_LOW_MASK:1
+    - TS_COLD_MASK:1
+    - TS_COOL_MASK:1
+    - TS_WARM_MASK:1
+    - TS_HOT_MASK:1
+    
+  - name: Fault Mask 0
+    address: 0x2C
+    bitfield: 
+    - IBAT_REG_MASK:1
+    - VBUS_OVP_MASK:1
+    - VBAT_OVP_MASK:1
+    - IBUS_OCP_MASK:1
+    - IBAT_OCP_MASK:1
+    - CONV_OCP_MASK:1
+    - VAC2_OVP_MASK:1
+    - VAC1_OVP_MASK:1
+
+  - name: Fault Mask 1
+    address: 0x2D
+    bitfield: 
+    - VSYS_SHORT_MASK:1
+    - VSYS_OVP_MASK:1
+    - OTG_OVP_MASK:1
+    - OTG_UVP_MASK:1
+    - RESERVED:1
+    - TSHUT_MASK:1
+    - RESERVED:2
+    
+  - name: ADC Control 
+    address: 0x2E
+    bitfield: 
+    - ADC_EN:1
+    - ADC_RATE:1
+    - ADC_SAMPLE:2
+    - ADC_AVG:1
+    - ADC_AVG_INIT:1
+    - RESERVED:2
+
+  - name: ADC Function Disable 0  
+    address: 0x2F
+    bitfield: 
+    - IBUS_ADC_DIS:1
+    - IBAT_ADC_DIS:1
+    - VBUS_ADC_DIS:1
+    - VBAT_ADC_DIS:1
+    - VSYS_ADC_DIS:1
+    - TS_ADC_DIS:1
+    - TDIE_ADC_DIS:1
+    - RESERVED:1
+
+  - name: ADC Function Disable 1 
+    address: 0x30
+    bitfield:
+    - DP_ADC_DIS:1
+    - DM_ADC_DIS:1
+    - VAC2_ADC_DIS:1
+    - VAC1_ADC_DIS:1
+    - RESERVED:4
+
+  - name: BUS ADC 
+    address: 0x31
+    bitfield:
+    - IBUS_ADC:16
+
+  - name: IBAT ADC 
+    address: 0x33
+    bitfield:
+    - IBAT_ADC:16
+
+  - name: VBUS ADC
+    address: 0x35
+    bitfield:
+    - VBUS_ADC:16
+
+  - name: VAC1 ADC
+    address: 0x37
+    bitfield:
+    - VAC1_ADC:16
+
+  - name: VAC2 ADC
+    address: 0x39
+    bitfield:
+    - VAC1_ADC:16
+
+  - name: VBAT ADC
+    address: 0x3B
+    bitfield: 
+    - VBAT_ADC:16
+
+  - name: VSYS ADC
+    address: 0x3D
+    bitfield:
+    - VSYS_ADC:16
+
+  - name: TS ADC
+    address: 0x3F
+    bitfield:
+    - TS_ADC:16
+
+  - name: TDIE_ADC
+    address: 0x41
+    bitfield:
+    - TDIE_ADC:16
+
+  - name: DP ADC
+    address: 0x43
+    bitfield:
+    - DP_ADC:16
+
+  - name: DN ADC
+    address: 0x45
+    bitfield:
+    - DN_ADC:16
+
+  - name: DPDM Driver
+    address: 0x47
+    bitfield: 
+    - DPLUS_DAC:3
+    - DMINUS_DAC:3
+    - RESERVED:2
+
+  - name: Part Information
+    address: 0x48
+    bitfield:
+    - RESERVED:2
+    - PN:3
+    - DEV_REV:3
+
+

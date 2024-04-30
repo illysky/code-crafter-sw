@@ -5,6 +5,13 @@ import sys
 import os
 import math
 
+from yaml import load, dump
+try:
+    from yaml import CLoader as Loader, CDumper as Dumper
+except ImportError:
+    from yaml import Loader, Dumper
+
+
 
 ##################################################################
 # Variables 
@@ -26,6 +33,11 @@ prototypes = ""     # prototypes of the driver
 functions = ""      # functions of the driver
 stubs = ""          # stubs of code for the user to add to
 address_size = ""
+
+
+copyright = "Copyright (c) 2023 Illysky Ltd"
+version = "v1.0.0"
+description = "Module for Zephyr RTOS by Dominic Moffat [2023-08-10]"
 
 # *******************************************************************
 # * @brief: Gets a snippet of code from the main snippet file
