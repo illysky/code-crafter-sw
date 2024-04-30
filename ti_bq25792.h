@@ -33,7 +33,7 @@ typedef union
     uint8_t v;
     struct
     {
-		unsigned RESERVED: 2;
+		unsigned : 2;
 		unsigned VSYSMIN: 6;
     }; 
 } __attribute__((packed))  bq25792_minimal_system_voltage_t;
@@ -46,7 +46,7 @@ typedef union
     uint16_t v;
     struct
     {
-		unsigned RESERVED: 5;
+		unsigned : 5;
 		unsigned VREG: 11;
     }; 
 } __attribute__((packed))  bq25792_charge_voltage_limit_t;
@@ -59,7 +59,7 @@ typedef union
     uint16_t v;
     struct
     {
-		unsigned RESERVED: 7;
+		unsigned : 7;
 		unsigned ICHG: 9;
     }; 
 } __attribute__((packed))  bq25792_charge_current_limit_t;
@@ -84,7 +84,7 @@ typedef union
     uint16_t v;
     struct
     {
-		unsigned RESERVED: 7;
+		unsigned : 7;
 		unsigned IINDPM: 9;
     }; 
 } __attribute__((packed))  bq25792_input_current_limit_t;
@@ -110,9 +110,9 @@ typedef union
     uint8_t v;
     struct
     {
-		unsigned RESERVED: 1;
+		unsigned : 1;
 		unsigned REG_RST: 1;
-		unsigned RESERVED: 1;
+		unsigned : 1;
 		unsigned ITERM: 5;
     }; 
 } __attribute__((packed))  bq25792_termination_control_t;
@@ -139,7 +139,7 @@ typedef union
     uint16_t v;
     struct
     {
-		unsigned RESERVED: 5;
+		unsigned : 5;
 		unsigned VOTG: 11;
     }; 
 } __attribute__((packed))  bq25792_votg_t;
@@ -189,7 +189,7 @@ typedef union
 		unsigned FORCE_ICO: 1;
 		unsigned EN_HIZ: 1;
 		unsigned EN_TERM: 1;
-		unsigned RESERVED: 1;
+		unsigned : 1;
     }; 
 } __attribute__((packed))  bq25792_charger_control_0_t;
 
@@ -201,7 +201,7 @@ typedef union
     uint8_t v;
     struct
     {
-		unsigned RESERVED: 2;
+		unsigned : 2;
 		unsigned VAC_OVP: 2;
 		unsigned WD_RST: 1;
 		unsigned WATCHDOG: 3;
@@ -273,7 +273,7 @@ typedef union
     struct
     {
 		unsigned SFET_PRESENT: 1;
-		unsigned RESERVED: 1;
+		unsigned : 1;
 		unsigned EN_IBAT: 1;
 		unsigned IBAT_REG: 2;
 		unsigned EN_IINDPM: 1;
@@ -295,7 +295,7 @@ typedef union
 		unsigned VBUS_PD_EN: 1;
 		unsigned VAC1_PD_EN: 1;
 		unsigned VAC2_PD_EN: 1;
-		unsigned RESERVED: 1;
+		unsigned : 1;
     }; 
 } __attribute__((packed))  bq25792_temperature_control_t;
 
@@ -310,7 +310,7 @@ typedef union
 		unsigned JEITA_VSET: 3;
 		unsigned JEITA_ISETH: 2;
 		unsigned JEITA_ISETC: 2;
-		unsigned RESERVED: 1;
+		unsigned : 1;
     }; 
 } __attribute__((packed))  bq25792_ntc_control_0_t;
 
@@ -338,7 +338,7 @@ typedef union
     uint16_t v;
     struct
     {
-		unsigned RESERVED: 7;
+		unsigned : 7;
 		unsigned ICO_ILIM: 9;
     }; 
 } __attribute__((packed))  bq25792_ico_current_limit_t;
@@ -385,7 +385,7 @@ typedef union
     struct
     {
 		unsigned ICO_STAT: 2;
-		unsigned RESERVED: 3;
+		unsigned : 3;
 		unsigned TREG_STAT: 1;
 		unsigned DPDM_STAT: 1;
 		unsigned VBAT_PRESENT_STAT: 1;
@@ -407,7 +407,7 @@ typedef union
 		unsigned CHG_TMR_STAT: 1;
 		unsigned TRICHG_TMR_STAT: 1;
 		unsigned PRECHG_TMR_STAT: 1;
-		unsigned RESERVED: 1;
+		unsigned : 1;
     }; 
 } __attribute__((packed))  bq25792_charger_status_3_t;
 
@@ -419,7 +419,7 @@ typedef union
     uint8_t v;
     struct
     {
-		unsigned RESERVED: 3;
+		unsigned : 3;
 		unsigned VBATOTG_LOW_STAT: 1;
 		unsigned TS_COLD_STAT: 1;
 		unsigned TS_COOL_STAT: 1;
@@ -459,9 +459,9 @@ typedef union
 		unsigned VSYS_OVP_STAT: 1;
 		unsigned OTG_OVP_STAT: 1;
 		unsigned OTG_UVP_STAT: 1;
-		unsigned RESERVED: 1;
+		unsigned : 1;
 		unsigned TSHUT_STAT: 1;
-		unsigned RESERVED: 2;
+		unsigned : 2;
     }; 
 } __attribute__((packed))  bq25792_fault_status_1_t;
 
@@ -494,9 +494,9 @@ typedef union
     {
 		unsigned CHG_FLAG: 1;
 		unsigned ICO_FLAG: 1;
-		unsigned RESERVED: 1;
+		unsigned : 1;
 		unsigned VBUS_FLAG: 1;
-		unsigned RESERVED: 1;
+		unsigned : 1;
 		unsigned TREG_FLAG: 1;
 		unsigned VBAT_PRESENT_FLAG: 1;
 		unsigned BC12_DONE_FLAG: 1;
@@ -511,7 +511,7 @@ typedef union
     uint8_t v;
     struct
     {
-		unsigned RESERVED: 1;
+		unsigned : 1;
 		unsigned DPDM_DONE_FLAG: 1;
 		unsigned ADC_DONE_FLAG: 1;
 		unsigned VSYS_FLAG: 1;
@@ -530,7 +530,7 @@ typedef union
     uint8_t v;
     struct
     {
-		unsigned RESERVED: 1;
+		unsigned : 1;
 		unsigned DPDM_DONE_FLAG: 1;
 		unsigned ADC_DONE_FLAG: 1;
 		unsigned VSYS_FLAG: 1;
@@ -549,7 +549,7 @@ typedef union
     uint8_t v;
     struct
     {
-		unsigned RESERVED: 3;
+		unsigned : 3;
 		unsigned VBATOTG_LOW_FLAG: 1;
 		unsigned TS_COLD_FLAG: 1;
 		unsigned TS_COOL_FLAG: 1;
@@ -589,9 +589,9 @@ typedef union
 		unsigned VSYS_OVP_FLAG: 1;
 		unsigned OTG_OVP_FLAG: 1;
 		unsigned OTG_UVP_FLAG: 1;
-		unsigned RESERVED: 1;
+		unsigned : 1;
 		unsigned TSHUT_FLAG: 1;
-		unsigned RESERVED: 2;
+		unsigned : 2;
     }; 
 } __attribute__((packed))  bq25792_fault_flag_1_t;
 
@@ -624,9 +624,9 @@ typedef union
     {
 		unsigned CHG_MASK: 1;
 		unsigned ICO_MASK: 1;
-		unsigned RESERVED: 1;
+		unsigned : 1;
 		unsigned VBUS_MASK: 1;
-		unsigned RESERVED: 1;
+		unsigned : 1;
 		unsigned TREG_MASK: 1;
 		unsigned VBAT_PRESENT_MASK: 1;
 		unsigned BC1_2_DONE_MASK: 1;
@@ -641,7 +641,7 @@ typedef union
     uint8_t v;
     struct
     {
-		unsigned RESERVED: 1;
+		unsigned : 1;
 		unsigned DPDM_DONE_MASK: 1;
 		unsigned ADC_DONE_MASK: 1;
 		unsigned VSYS_MASK: 1;
@@ -660,7 +660,7 @@ typedef union
     uint8_t v;
     struct
     {
-		unsigned RESERVED: 3;
+		unsigned : 3;
 		unsigned VBATOTG_LOW_MASK: 1;
 		unsigned TS_COLD_MASK: 1;
 		unsigned TS_COOL_MASK: 1;
@@ -700,9 +700,9 @@ typedef union
 		unsigned VSYS_OVP_MASK: 1;
 		unsigned OTG_OVP_MASK: 1;
 		unsigned OTG_UVP_MASK: 1;
-		unsigned RESERVED: 1;
+		unsigned : 1;
 		unsigned TSHUT_MASK: 1;
-		unsigned RESERVED: 2;
+		unsigned : 2;
     }; 
 } __attribute__((packed))  bq25792_fault_mask_1_t;
 
@@ -719,7 +719,7 @@ typedef union
 		unsigned ADC_SAMPLE: 2;
 		unsigned ADC_AVG: 1;
 		unsigned ADC_AVG_INIT: 1;
-		unsigned RESERVED: 2;
+		unsigned : 2;
     }; 
 } __attribute__((packed))  bq25792_adc_control_t;
 
@@ -738,7 +738,7 @@ typedef union
 		unsigned VSYS_ADC_DIS: 1;
 		unsigned TS_ADC_DIS: 1;
 		unsigned TDIE_ADC_DIS: 1;
-		unsigned RESERVED: 1;
+		unsigned : 1;
     }; 
 } __attribute__((packed))  bq25792_adc_function_disable_0_t;
 
@@ -754,7 +754,7 @@ typedef union
 		unsigned DM_ADC_DIS: 1;
 		unsigned VAC2_ADC_DIS: 1;
 		unsigned VAC1_ADC_DIS: 1;
-		unsigned RESERVED: 4;
+		unsigned : 4;
     }; 
 } __attribute__((packed))  bq25792_adc_function_disable_1_t;
 
@@ -900,7 +900,7 @@ typedef union
     {
 		unsigned DPLUS_DAC: 3;
 		unsigned DMINUS_DAC: 3;
-		unsigned RESERVED: 2;
+		unsigned : 2;
     }; 
 } __attribute__((packed))  bq25792_dpdm_driver_t;
 
@@ -912,7 +912,7 @@ typedef union
     uint8_t v;
     struct
     {
-		unsigned RESERVED: 2;
+		unsigned : 2;
 		unsigned PN: 3;
 		unsigned DEV_REV: 3;
     }; 

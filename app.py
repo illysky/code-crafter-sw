@@ -83,6 +83,9 @@ if __name__ == "__main__":
             for b in r['bitfield']:
                 field_name, bit_position = b.split(':')
                 bits+=int(bit_position); 
+
+                if field_name == "RESERVED":
+                    field_name = ""
                 bitfields+=f"\t\tunsigned {field_name}: {bit_position};\n"
             
             if (bits % 8 != 0):
