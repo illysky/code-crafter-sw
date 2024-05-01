@@ -15,7 +15,6 @@ ascii_logo = \
 '''
 
 ##################################################################
-
 frag_func_zephyr = \
 ''' 
 // ##################################################################
@@ -26,8 +25,7 @@ static int32_t {##_FUNC_##}_{##_WR_##}(const struct device *dev, {##_TYPE_##} *b
     return i2c_burst_{##_WR_##}_dt(dev, (const uint8_t*)buf->val, {##_SIZE_##}); 
 }
 '''
-##################################################################
-#
+
 ##################################################################
 frag_func_hal = \
 ''' 
@@ -40,8 +38,6 @@ int32_t {##_FUNC_##}_{##_WR_##}(hal_i2c_t *i2c, uint8_t addr, {##_TYPE_##} *buf)
 }
 '''
 
-##################################################################
-#
 ##################################################################
 frag_typedef = \
 '''
@@ -56,6 +52,30 @@ typedef union
     }; 
 } __attribute__((packed)) {##_TYPEDEF_##};
 '''
+
+##################################################################
+frag_cmakelist = \
+'''
+if (CONFIG_{##_DEVICE_UPPER_##})
+    zephyr_library()
+    zephyr_include_directories(.)
+    zephyr_library_sources({##_DEVICE_LOWER_##}.c)
+endif()
+'''
+
+##################################################################
+frag_kconfig = \
+'''  
+config {##_DEVICE_UPPER_##}
+	bool "{##_DESC_##}"
+	default n
+	depends on DT_HAS_{##_MANU_##}_{##_DEVICE_UPPER_##}_ENABLED
+	select {##_BUS_##}
+	select {##_API_UPPER_##}
+	help
+	  Enable {##_DEVICE_UPPER_##} {##_API_UPPER_##} driver.
+'''
+
 
 ##################################################################
 def get_api (name):
@@ -178,7 +198,9 @@ if __name__ == "__main__":
 
 
         root = f"{device['device']}".lower()
-        path = f"{root}/zephyr/"
+        os.makedirs(f"{root}/zephyr/", exist_ok=True); 
+        os.makedirs(f"{root}/zephyr/dts/bindings", exist_ok=True); 
+        os.makedirs(f"{root}/zephyr/zephyr", exist_ok=True); 
 
         ############################################################
         #  Header
@@ -194,8 +216,7 @@ if __name__ == "__main__":
         header = replace("TYPEDEFS", header, typedefs)
         header = replace("BUS", header, device['bus'].lower())
 
-        os.makedirs(path, exist_ok=True); 
-        with open(f"{path}/{root}.h", "w") as f:
+        with open(f"{root}/zephyr/{root}.h", "w") as f:
             f.write(header)
 
         #############################################################
@@ -216,11 +237,33 @@ if __name__ == "__main__":
         source = replace("API_L", source, device['api'].lower())
         source = replace("BUS", source, device['bus'].lower())
 
-        os.makedirs(path, exist_ok=True); 
-        with open(f"{path}/{root}.c", "w") as f:
+        with open(f"{root}/zephyr/{root}.c", "w") as f:
             f.write(source)
 
         # TODO:
-        # Add instantions and compat
+        cmakelist = frag_cmakelist
+        cmakelist = replace("DEVICE_UPPER", cmakelist, device['device'].upper())
+        cmakelist = replace("DEVICE_LOWER", cmakelist, device['device'].lower())
+        with open(f"{root}/zephyr/CmakeLists.txt", "w") as f:
+            f.write(cmakelist)
+
         # Add kconfig file 
+        kconfig = frag_kconfig
+        kconfig = replace("DEVICE_UPPER", kconfig, device['device'].upper())
+        kconfig = replace("DESC", kconfig, device['device'].lower())
+        kconfig = replace("BUS", kconfig, device['bus'].upper())
+        kconfig = replace("API_UPPER", kconfig, device['api'].upper())
+        kconfig = replace("MANU", kconfig, device['manufacturer'].upper())
+
+        with open(f"{root}/zephyr/Kconfig", "w") as f:
+            f.write(kconfig)
+
+        with open(f"{root}/zephyr/dts/bindings/{device['manufacturer'].lower()},{device['device'].lower()}.yaml", "w") as f:
+            pass
+
+        with open(f"{root}/zephyr/zephyr/module.yaml", "w") as f:
+            pass
+
+
+
         # Add dts bindings
