@@ -1,114 +1,226 @@
 from datetime import datetime
 import yaml
 import re
+import os
 
+
+ascii_logo = \
+'''
+ ____   ____  _______     _________ _____            _  __
+|  _ \ / __ \|  __ \ \   / /__   __|  __ \     /\   | |/ /
+| |_) | |  | | |  | \ \_/ /   | |  | |__) |   /  \  | ' / 
+|  _ <| |  | | |  | |\   /    | |  |  _  /   / /\ \ |  <  
+| |_) | |__| | |__| | | |     | |  | | \ \  / ____ \| . \ 
+|____/ \____/|_____/  |_|     |_|  |_|  \_\/_/    \_\_|\_\ 
+'''
 
 ##################################################################
-snippet_typedef = \
-'''
-#define {$$_REGADDR_$$}
-#define {$$_REGSIZE_$$}
-typedef union
-{
-    {$$_VALUE_$$};
-    struct
-    {
-{$$_BITFIELDS_$$}
-    }; 
-} __attribute__((packed)) {$$_TYPEDEF_$$};
 
+frag_func_zephyr = \
+''' 
+// ##################################################################
+// {##_FUNC_##}_{##_WR_##}
+// ##################################################################
+static int32_t {##_FUNC_##}_{##_WR_##}(const struct device *dev, {##_TYPE_##} *buf)
+{
+    return i2c_burst_{##_WR_##}_dt(dev, (const uint8_t*)buf->val, {##_SIZE_##}); 
+}
 '''
 ##################################################################
 #
 ##################################################################
-snippet_h_file = \
-'''
- /* 
- ____  __    __   _  _  ___  _  _  _  _ 
-(_  _)(  )  (  ) ( \/ )/ __)( )/ )( \/ )
- _)(_  )(__  )(__ \  / \__ \ )  (  \  / 
-(____)(____)(____)(__) (___/(_)\_) (__) 
-
- {$$_DESCRIPTION_$$}
- {$$_VERSION_$$}
- {$$_COPYRIGHT_$$}
- */  
-
-#ifndef __{$$_DRIVER_$$}_H
-#define __{$$_DRIVER_$$}_H
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#include <stdio.h>
-#include <string.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <zephyr/device.h>
-#include <zephyr/devicetree.h>
-#include <zephyr/kernel.h>
-
-{$$_TYPEDEFS_$$}
-
-#ifdef __cplusplus
+frag_func_hal = \
+''' 
+// ##################################################################
+// {##_FUNC_##}_{##_WR_##}
+// ##################################################################
+int32_t {##_FUNC_##}_{##_WR_##}(hal_i2c_t *i2c, uint8_t addr, {##_TYPE_##} *buf)
+{
+    return i2c->read(addr,(const uint8_t*)buf->val, {##_SIZE_##}); 
 }
-#endif
-#endif // {$$_DRIVER_$$}_H
 '''
+
+##################################################################
+#
+##################################################################
+frag_typedef = \
+'''
+#define {##_REGADDR_##}
+#define {##_REGSIZE_##}
+typedef union
+{
+    {##_VALUE_##} val;
+    struct
+    {
+{##_BITFIELDS_##}
+    }; 
+} __attribute__((packed)) {##_TYPEDEF_##};
+'''
+
+##################################################################
+def get_api (name):
+##################################################################
+
+    # Open Snippet File
+    with open("tmpl_zephyr_api.c", "r") as f:
+        d = f.read(); 
+        p = f"{{@@_{name.upper()}_START_@@}}(.*?){{@@_{name.upper()}_END_@@}}"
+        result = re.search(p,d,re.DOTALL); 
+        if result == None:
+            print(f"Error: API \"{name.upper()}\" not found, please add manually")
+            return None
+        return result.group(1).strip()
+
 ##################################################################
 def replace (marker, snip, str):
 ##################################################################
-    return snip.replace(f"{{$$_{marker}_$$}}",str)
-
+    return snip.replace(f"{{##_{marker}_##}}",str)
 
 ##################################################################
 if __name__ == "__main__":
 ##################################################################
     
     # Open the YAML file
-    with open("test.yaml", "r") as f:
-        device = yaml.safe_load(f)
-        typedefs = ""
+    with open("test.yaml", "r") as file_yaml:
+        device = yaml.safe_load(file_yaml)
         
-        #  Construct all the typedefs
+        ############################################################
+        # Iterate Registers
+        ############################################################
+        typedefs = ""
+        z_funcs = ""
+        z_protos = ""
+        h_funcs = ""
+        h_protos = ""
         for r in device['registers']:
-            t = snippet_typedef
-            name = f" {device['device'].upper()}_{r['name'].replace(' ', '_').upper()}"
-            t = replace("REGADDR", t, f"{name}_ADDR 0x{r['address']:02X}" )
-            t = replace("TYPEDEF", t, f"{name.lower()}_t" )
             
+            ################################################
+            # Names
+            ################################################
+            reg_name = f"{device['device'].upper()}_{r['name'].replace(' ', '_').upper()}"
+            reg_addr = f"{reg_name}_ADDR 0x{r['address']:02X}"
+            reg_typedef = f"{reg_name.lower()}_t"
+ 
+            ################################################
+            # Typedefs
+            ################################################
             bits = 0; 
             bitfields = ""
             for b in r['bitfield']:
                 field_name, bit_position = b.split(':')
                 bits+=int(bit_position); 
-
                 if field_name == "RESERVED":
                     field_name = ""
                 bitfields+=f"\t\tunsigned {field_name}: {bit_position};\n"
             
+            # Check for 8 bit alignment
             if (bits % 8 != 0):
-                print("not 8 bit aligned ")
+                print(f"Error: not 8 bit aligned: {reg_name}")
                 exit(1)
-            
+
+            # Get the reg size
+            reg_size = f"{reg_name}_SIZE {int(bits/8)}"
+            reg_size_def = f"{reg_name}_SIZE"
+
+
+            ################################################
+            # Construct Typedef
+            ################################################
+            t = frag_typedef
+            t = replace("REGADDR", t, reg_addr)
+            t = replace("TYPEDEF", t, reg_typedef)
             t = replace("BITFIELDS", t, bitfields.rstrip())
-            t = replace("REGSIZE", t, f"{name}_SIZE { int(bits/8)}" )
-            t = replace("VALUE", t, f"uint{bits}_t v" )
+            t = replace("REGSIZE", t, reg_size)
+            t = replace("VALUE", t, f"uint{bits}_t")
             typedefs+= t
 
-        # Construct the header file         
-        h = snippet_h_file
-        h = replace("DESCRIPTION", h, f"Driver header file for {device['manufacturer']} {device['device']}")
-        h = replace("COPYRIGHT", h, device['copyright'])
-        h = replace("VERSION", h, device['version'])
-        h = replace("DRIVER", h, f"{device['manufacturer']}_{device['device']}".upper())
-        h = replace("TYPEDEFS", h, typedefs)
+
+            ################################################
+            # Construct Function and Prototype (Zephyr)
+            ################################################
+            func = frag_func_zephyr
+            func = replace("FUNC", func, reg_name.lower())
+            func = replace("WR", func, "read");
+            func = replace("TYPE", func, reg_typedef);
+            func = replace("SIZE", func, reg_size_def);
+            z_funcs +=  func
+            z_protos+=  func.split("\n")[4].strip() +";\n"
+
+            if (r['write'] == True): 
+                func = frag_func_zephyr
+                func = replace("FUNC", func, reg_name.lower())
+                func = replace("WR", func, "write");
+                func = replace("TYPE", func, reg_typedef);
+                func = replace("SIZE", func, reg_size_def);
+                z_funcs +=  func
+                z_protos+=  func.split("\n")[4].strip() +";\n"
 
 
+            ################################################
+            # Construct Function and Prototype (Hal)
+            ################################################
+            func = frag_func_hal
+            func = replace("FUNC", func, reg_name.lower())
+            func = replace("WR", func, "read");
+            func = replace("TYPE", func, reg_typedef);
+            func = replace("SIZE", func, reg_size_def);
+            h_funcs +=  func
+            h_protos+=  func.split("\n")[4].strip() +";\n"
 
-        with open(f"{device['manufacturer']}_{device['device']}.h".lower(), 'w') as header:
-            header.write(h)
+            if (r['write'] == True):    
+                func = frag_func_hal
+                func = replace("FUNC", func, reg_name.lower())
+                func = replace("WR", func, "write");
+                func = replace("TYPE", func, reg_typedef);
+                func = replace("SIZE", func, reg_size_def);
+                h_funcs +=  func
+                h_protos+=  func.split("\n")[4].strip() +";\n"
 
 
+        root = f"{device['device']}".lower()
+        path = f"{root}/zephyr/"
 
+        ############################################################
+        #  Header
+        ############################################################ 
+        with open("tmpl_zephyr.h", "r") as f:
+            header = f.read(); 
+    
+        header = replace("LOGO", header, ascii_logo.strip())
+        header = replace("DESCRIPTION", header, f"Driver for {device['manufacturer']} {device['device']}")
+        header = replace("COPYRIGHT", header, device['copyright'])
+        header = replace("VERSION", header, device['version'])
+        header = replace("DEVICE", header, f"{device['device']}".lower())
+        header = replace("TYPEDEFS", header, typedefs)
+        header = replace("BUS", header, device['bus'].lower())
+
+        os.makedirs(path, exist_ok=True); 
+        with open(f"{path}/{root}.h", "w") as f:
+            f.write(header)
+
+        #############################################################
+        # Source 
+        #############################################################
+        with open("tmpl_zephyr.c", "r") as f:
+            source = f.read(); 
+    
+        source = replace("LOGO", source, ascii_logo.strip())
+        source = replace("DESCRIPTION", source, f"Driver for {device['manufacturer']} {device['device']}")
+        source = replace("COPYRIGHT", source, device['copyright'])
+        source = replace("VERSION", source, device['version'])
+        source = replace("MANU", source, f"{device['manufacturer']}".lower())
+        source = replace("DEVICE_UPPER", source, f"{device['device']}".upper())
+        source = replace("DEVICE_LOWER", source, f"{device['device']}".lower())
+        source = replace("FUNCTIONS", source, z_funcs)
+        source = replace("API_U", source, device['api'].upper())
+        source = replace("API_L", source, device['api'].lower())
+        source = replace("BUS", source, device['bus'].lower())
+
+        os.makedirs(path, exist_ok=True); 
+        with open(f"{path}/{root}.c", "w") as f:
+            f.write(source)
+
+        # TODO:
+        # Add instantions and compat
+        # Add kconfig file 
+        # Add dts bindings

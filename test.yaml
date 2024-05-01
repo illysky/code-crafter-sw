@@ -2,48 +2,56 @@
 device: BQ25792
 manufacturer: TI
 version: v1.0.0
-author: Dominic Moffat
-copyright: Copyright (c) 2023 Illysky Ltd
+author: Code Crafter
+copyright: Copyright (c) 2023 Inova Design Solutions Ltd
 bus: i2c
+api: charger
 
 registers:
   - name: Minimal System Voltage
     address: 0x00
+    write: true
     bitfield:
     - RESERVED:2
     - VSYSMIN:6
 
   - name: Charge Voltage Limit 
     address: 0x00
+    write: true
     bitfield:
     - RESERVED:5
     - VREG:11
     
   - name: Charge Current Limit 
     address: 0x00
+    write: true
     bitfield:
     - RESERVED:7
     - ICHG:9
     
   - name: Input Voltage Limit 
     address: 0x05
+    write: true
     bitfield:
     - VINDPM:8
 
   - name: Input Current Limit
     address: 0x06
+    write: true
     bitfield:
     - RESERVED:7
     - IINDPM:9
 
   - name: Precharge Control 
     address: 0x08
+    write: true
     bitfield:
     - VBAT_LOWV:2
     - IPRECHG:6
 
   - name: Termination Control 
     address: 0x09
+    write: true
     bitfield:
     - RESERVED:1
     - REG_RST:1
@@ -52,6 +60,7 @@ registers:
 
   - name: Recharge Control
     address: 0x0A
+    write: true
     bitfield: 
     - CELL:2
     - TRECHG:2
@@ -59,18 +68,21 @@ registers:
 
   - name: VOTG
     address: 0x0B
+    write: true
     bitfield:
     - RESERVED:5
     - VOTG:11
 
   - name: IOTG Regulation 
     address: 0x0D
+    write: true
     bitfield: 
     - PRECHG_TMR:1
     - IOTG:7
     
   - name: Timer Control
     address: 0x0E
+    write: true
     bitfield:
     - TOPOFF_TMR:2
     - EN_TRICHG_TMR:1
@@ -82,6 +94,7 @@ registers:
 
   - name: Charger Control 0
     address: 0x0F
+    write: true
     bitfield:
     - EN_AUTO_IBATDIS:1
     - FORCE_IBATDIS:1
@@ -94,6 +107,7 @@ registers:
     
   - name: Charger Control 1
     address: 0x10
+    write: true
     bitfield:
     - RESERVED:2
     - VAC_OVP:2
@@ -102,6 +116,7 @@ registers:
 
   - name: Charger Control 2
     address: 0x11
+    write: true
     bitfield: 
     - FORCE_INDET:1
     - AUTO_INDET_EN:1
@@ -113,6 +128,7 @@ registers:
 
   - name: Charger Control 3
     address: 0x12
+    write: true
     bitfield:
     - DIS_ACDRV:1
     - EN_OTG:1
@@ -125,6 +141,7 @@ registers:
 
   - name: Charger Control 4
     address: 0x13
+    write: true
     bitfield:
     - EN_ACDRV2:1
     - EN_ACDRV1:1
@@ -137,6 +154,7 @@ registers:
     
   - name: Charger Control 5
     address: 0x14
+    write: true
     bitfield:
     - SFET_PRESENT:1
     - RESERVED:1
@@ -148,6 +166,7 @@ registers:
 
   - name: Temperature Control
     address: 0x16
+    write: true
     bitfield:
     - TREG:2
     - TSHUT:2
@@ -158,6 +177,7 @@ registers:
 
   - name: NTC Control 0
     address: 0x17
+    write: true
     bitfield:
     - JEITA_VSET:3
     - JEITA_ISETH:2
@@ -167,6 +187,7 @@ registers:
 
   - name: NTC Control 0
     address: 0x18
+    write: true
     bitfield:
     - TS_COOL:2
     - TS_WARM:2
@@ -176,12 +197,14 @@ registers:
     
   - name: ICO Current Limit
     address: 0x19
+    write: true
     bitfield:
     - RESERVED:7
     - ICO_ILIM:9
 
   - name: Charder Status 0
     address: 0x1B
+    write: true
     bitfield:
     - IINDPM_STAT:1
     - VINDPM_STAT:1
@@ -194,6 +217,7 @@ registers:
 
   - name: Charger Status 1
     address: 0x1C
+    write: true
     bitfield: 
     - CHG_STAT:3
     - VBUS_STAT:4
@@ -201,6 +225,7 @@ registers:
 
   - name: Charger Status 2
     address: 0x1D
+    write: true
     bitfield:
     - ICO_STAT:2
     - RESERVED:3
@@ -210,6 +235,7 @@ registers:
 
   - name: Charger Status 3
     address: 0x1E
+    write: true
     bitfield:
     - ACRB2_STAT:1
     - ACRB1_STAT:1
@@ -223,6 +249,7 @@ registers:
 
   - name: Charger Status 4
     address: 0x1F
+    write: true
     bitfield:
     - RESERVED:3
     - VBATOTG_LOW_STAT:1
@@ -233,6 +260,7 @@ registers:
     
   - name: Fault Status 0 
     address: 0x20
+    write: true
     bitfield:
     - IBAT_REG_STAT:1
     - VBUS_OVP_STAT:1
@@ -245,6 +273,7 @@ registers:
 
   - name: Fault Status 1
     address: 0x21
+    write: true
     bitfield:
     - VSYS_SHORT_STAT:1
     - VSYS_OVP_STAT:1
@@ -256,6 +285,7 @@ registers:
     
   - name: Charger Flag 0
     address: 0x21
+    write: true
     bitfield: 
     - IINDPM_FLAG:1
     - VINDPM_FLAG:1
@@ -268,6 +298,7 @@ registers:
 
   - name: Charger Flag 1
     address: 0x23
+    write: true
     bitfield:
     - CHG_FLAG:1
     - ICO_FLAG:1
@@ -280,6 +311,7 @@ registers:
 
   - name: Charger Flag 2
     address: 0x24
+    write: true
     bitfield:
     - RESERVED:1
     - DPDM_DONE_FLAG:1
@@ -292,6 +324,7 @@ registers:
 
   - name: Charger Flag 2
     address: 0x24
+    write: true
     bitfield:
     - RESERVED:1
     - DPDM_DONE_FLAG:1
@@ -304,6 +337,7 @@ registers:
   
   - name: Charger Flag 3
     address: 0x25
+    write: true
     bitfield:
     - RESERVED:3
     - VBATOTG_LOW_FLAG:1
@@ -314,6 +348,7 @@ registers:
 
   - name: Fault Flag 0
     address: 0x26
+    write: true
     bitfield:  
     - IBAT_REG_FLAG:1
     - VBUS_OVP_FLAG:1
@@ -326,6 +361,7 @@ registers:
 
   - name: Fault Flag 1
     address: 0x27
+    write: true
     bitfield: 
     - VSYS_SHORT_FLAG:1
     - VSYS_OVP_FLAG:1
@@ -337,6 +373,7 @@ registers:
 
   - name: Charger Mask 0
     address: 0x28
+    write: true
     bitfield:
     - IINDPM_MASK:1
     - VINDPM_MASK:1
@@ -349,6 +386,7 @@ registers:
 
   - name: Charger Mask 1
     address: 0x29
+    write: true
     bitfield:
     - CHG_MASK:1
     - ICO_MASK:1
@@ -361,6 +399,7 @@ registers:
 
   - name: Charger Mask 2
     address: 0x2A
+    write: true
     bitfield:
     - RESERVED:1
     - DPDM_DONE_MASK:1
@@ -373,6 +412,7 @@ registers:
 
   - name: Charger Mask 3
     address: 0x2B
+    write: true
     bitfield:
     - RESERVED:3
     - VBATOTG_LOW_MASK:1
@@ -383,6 +423,7 @@ registers:
     
   - name: Fault Mask 0
     address: 0x2C
+    write: true
     bitfield: 
     - IBAT_REG_MASK:1
     - VBUS_OVP_MASK:1
@@ -395,6 +436,7 @@ registers:
 
   - name: Fault Mask 1
     address: 0x2D
+    write: true
     bitfield: 
     - VSYS_SHORT_MASK:1
     - VSYS_OVP_MASK:1
@@ -406,6 +448,7 @@ registers:
     
   - name: ADC Control 
     address: 0x2E
+    write: true
     bitfield: 
     - ADC_EN:1
     - ADC_RATE:1
@@ -416,6 +459,7 @@ registers:
 
   - name: ADC Function Disable 0  
     address: 0x2F
+    write: true
     bitfield: 
     - IBUS_ADC_DIS:1
     - IBAT_ADC_DIS:1
@@ -428,6 +472,7 @@ registers:
 
   - name: ADC Function Disable 1 
     address: 0x30
+    write: true
     bitfield:
     - DP_ADC_DIS:1
     - DM_ADC_DIS:1
@@ -437,61 +482,73 @@ registers:
 
   - name: BUS ADC 
     address: 0x31
+    write: true
     bitfield:
     - IBUS_ADC:16
 
   - name: IBAT ADC 
     address: 0x33
+    write: true
     bitfield:
     - IBAT_ADC:16
 
   - name: VBUS ADC
     address: 0x35
+    write: true
     bitfield:
     - VBUS_ADC:16
 
   - name: VAC1 ADC
     address: 0x37
+    write: true
     bitfield:
     - VAC1_ADC:16
 
   - name: VAC2 ADC
     address: 0x39
+    write: true
     bitfield:
     - VAC1_ADC:16
 
   - name: VBAT ADC
     address: 0x3B
+    write: true
     bitfield: 
     - VBAT_ADC:16
 
   - name: VSYS ADC
     address: 0x3D
+    write: true
     bitfield:
     - VSYS_ADC:16
 
   - name: TS ADC
     address: 0x3F
+    write: true
     bitfield:
     - TS_ADC:16
 
   - name: TDIE_ADC
     address: 0x41
+    write: true
     bitfield:
     - TDIE_ADC:16
 
   - name: DP ADC
     address: 0x43
+    write: true
     bitfield:
     - DP_ADC:16
 
   - name: DN ADC
     address: 0x45
+    write: true
     bitfield:
     - DN_ADC:16
 
   - name: DPDM Driver
     address: 0x47
+    write: true
     bitfield: 
     - DPLUS_DAC:3
     - DMINUS_DAC:3
@@ -499,6 +556,7 @@ registers:
 
   - name: Part Information
     address: 0x48
+    write: true
     bitfield:
     - RESERVED:2
     - PN:3
