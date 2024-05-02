@@ -16,14 +16,14 @@ registers:
     - VSYSMIN:6
 
   - name: Charge Voltage Limit 
-    address: 0x00
+    address: 0x01
     write: true
     bitfield:
     - RESERVED:5
     - VREG:11
     
   - name: Charge Current Limit 
-    address: 0x00
+    address: 0x03
     write: true
     bitfield:
     - RESERVED:7
@@ -185,7 +185,7 @@ registers:
     - RESERVED:1
 
 
-  - name: NTC Control 0
+  - name: NTC Control 1
     address: 0x18
     write: true
     bitfield:
@@ -322,19 +322,6 @@ registers:
     - PRECHG_TMR_FLAG:1
     - TOPOFF_TMR_FLAG:1
 
-  - name: Charger Flag 2
-    address: 0x24
-    write: true
-    bitfield:
-    - RESERVED:1
-    - DPDM_DONE_FLAG:1
-    - ADC_DONE_FLAG:1
-    - VSYS_FLAG:1
-    - CHG_TMR_FLAG:1
-    - TRICHG_TMR_FLAG:1
-    - PRECHG_TMR_FLAG:1
-    - TOPOFF_TMR_FLAG:1
-  
   - name: Charger Flag 3
     address: 0x25
     write: true

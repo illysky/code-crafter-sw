@@ -5,8 +5,8 @@
 {##_COPYRIGHT_##}
 */   
 
-#ifndef __{##_DRIVER_##}_H
-#define __{##_DRIVER_##}_H
+#ifndef __{##_MANU_##}_{##_DEVICE_U_##}_H
+#define __{##_MANU_##}_{##_DEVICE_U_##}_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -31,4 +31,4 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-#endif // {##_DRIVER_##}_H
+#endif // {##_MANU_##}_{##_DEVICE_U_##}

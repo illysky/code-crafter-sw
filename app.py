@@ -23,7 +23,8 @@ frag_func_zephyr = \
 // ##################################################################
 int32_t {##_FUNC_##}_{##_WR_##}(const struct device *dev, {##_TYPE_##} *buf)
 {
-    return i2c_burst_{##_WR_##}_dt(dev, (const uint8_t*)buf->val, {##_SIZE_##}); 
+    const struct {##_DEVICE_##}_config *cfg = dev->config;
+    return i2c_burst_{##_WR_##}_dt(&cfg->i2c, {##_ADDR_##}, (uint8_t*)&buf->val, {##_SIZE_##}); 
 }
 '''
 
@@ -33,9 +34,9 @@ frag_func_hal = \
 // ##################################################################
 // {##_FUNC_##}_{##_WR_##}
 // ##################################################################
-int32_t {##_FUNC_##}_{##_WR_##}(hal_i2c_t *i2c, uint8_t addr, {##_TYPE_##} *buf)
+int32_t {##_FUNC_##}_{##_WR_##}(hal_i2c_t *i2c,{##_TYPE_##} *buf)
 {
-    return i2c->read(addr,(const uint8_t*)buf->val, {##_SIZE_##}); 
+    return i2c->read(i2c->dev_addr, (uint8_t*)&buf->val, {##_SIZE_##}); 
 }
 '''
 
@@ -78,9 +79,9 @@ config {##_DEVICE_UPPER_##}
 '''
 
 ##################################################################
-frag_dts = \
+frag_module = \
 '''
-name: {##_DEVICE_UPPER_##}
+name: {##_DEVICE_##}
 
 build:
   cmake: .
@@ -91,7 +92,7 @@ build:
 '''
 
 ##################################################################
-frag_module = \
+frag_dts = \
 '''  
 description: {##_DESC_##}
 compatible: "{##_MANU_##},{##_DEVICE_##}"
@@ -153,6 +154,7 @@ if __name__ == "__main__":
 
         
         for r in device['registers']:
+            print(f"Register {r['address']:02X}")
             
             ################################################
             # Names
@@ -200,9 +202,12 @@ if __name__ == "__main__":
             ################################################
             func = frag_func_zephyr
             func = replace("FUNC", func, reg_name.lower())
-            func = replace("WR", func, "read");
-            func = replace("TYPE", func, reg_typedef);
-            func = replace("SIZE", func, reg_size_def);
+            func = replace("WR", func, "read")
+            func = replace("TYPE", func, reg_typedef)
+            func = replace("DEVICE", func, device['device'].lower())
+            func = replace("SIZE", func, reg_size_def)
+            func = replace("ADDR", func, f"{reg_name}_ADDR")
+
             z_funcs +=  func
             z_protos+=  func.split("\n")[4].strip() +";\n"
 
@@ -211,7 +216,9 @@ if __name__ == "__main__":
                 func = replace("FUNC", func, reg_name.lower())
                 func = replace("WR", func, "write");
                 func = replace("TYPE", func, reg_typedef);
+                func = replace("DEVICE", func, device['device'].lower())
                 func = replace("SIZE", func, reg_size_def);
+                func = replace("ADDR", func, f"{reg_name}_ADDR");
                 z_funcs +=  func
                 z_protos+=  func.split("\n")[4].strip() +";\n"
 
@@ -241,9 +248,9 @@ if __name__ == "__main__":
         #  Zephyr Generation
         ############################################################ 
         root = f"{device['device']}".lower()
-        os.makedirs(f"{root}/zephyr/", exist_ok=True); 
-        os.makedirs(f"{root}/zephyr/dts/bindings", exist_ok=True); 
-        os.makedirs(f"{root}/zephyr/zephyr", exist_ok=True); 
+        os.makedirs(f"{root}/zephyr/{root}", exist_ok=True); 
+        os.makedirs(f"{root}/zephyr/{root}/dts/bindings", exist_ok=True); 
+        os.makedirs(f"{root}/zephyr/{root}/zephyr", exist_ok=True); 
 
         ############################################################
         #  Header
@@ -259,7 +266,7 @@ if __name__ == "__main__":
         header = replace("TYPEDEFS", header, typedefs)
         header = replace("BUS", header, device['bus'].lower())
 
-        with open(f"{root}/zephyr/{root}.h", "w") as f:
+        with open(f"{root}/zephyr/{root}/{root}.h", "w") as f:
             f.write(header)
 
         #############################################################
@@ -267,7 +274,6 @@ if __name__ == "__main__":
         #############################################################
         with open("tmpl_zephyr.c", "r") as f:
             source = f.read(); 
-    
         source = replace("LOGO", source, ascii_logo.strip())
         source = replace("DESCRIPTION", source, f"Driver for {device['manufacturer']} {device['device']}")
         source = replace("COPYRIGHT", source, device['copyright'])
@@ -276,63 +282,65 @@ if __name__ == "__main__":
         source = replace("DEVICE_UPPER", source, f"{device['device']}".upper())
         source = replace("DEVICE_LOWER", source, f"{device['device']}".lower())
         source = replace("FUNCTIONS", source, z_funcs)
-        source = replace("API_U", source, device['api'].upper())
+        source = replace("API_UPPER", source, device['api'].upper())
         source = replace("API_L", source, device['api'].lower())
         source = replace("BUS", source, device['bus'].lower())
-
-        with open(f"{root}/zephyr/{root}.c", "w") as f:
+        with open(f"{root}/zephyr/{root}/{root}.c", "w") as f:
             f.write(source)
 
+
+        #############################################################
+        # CMakeList 
+        #############################################################
         # TODO:
         cmakelist = frag_cmakelist
         cmakelist = replace("DEVICE_UPPER", cmakelist, device['device'].upper())
         cmakelist = replace("DEVICE_LOWER", cmakelist, device['device'].lower())
-        with open(f"{root}/zephyr/CmakeLists.txt", "w") as f:
+        with open(f"{root}/zephyr/{root}/CMakeLists.txt", "w") as f:
             f.write(cmakelist)
 
-        # Add kconfig file 
+        #############################################################
+        # KConfig 
+        #############################################################
         kconfig = frag_kconfig
         kconfig = replace("DEVICE_UPPER", kconfig, device['device'].upper())
         kconfig = replace("DESC", kconfig, device['device'].lower())
         kconfig = replace("BUS", kconfig, device['bus'].upper())
         kconfig = replace("API_UPPER", kconfig, device['api'].upper())
         kconfig = replace("MANU", kconfig, device['manufacturer'].upper())
-
-        # Add dts bindings
-        with open(f"{root}/zephyr/Kconfig", "w") as f:
+        with open(f"{root}/zephyr/{root}/Kconfig", "w") as f:
             f.write(kconfig)
 
-        # Add dts bindings
-
-         # Add kconfig file 
+        #############################################################
+        # DTS 
+        #############################################################
         dts = frag_dts
-        dts = replace("DEVICE_UPPER", dts, device['device'].lower()) 
-        with open(f"{root}/zephyr/dts/bindings/{device['manufacturer'].lower()},{device['device'].lower()}.yaml", "w") as f:
-            f.write(dts)
+        dts = replace("MANU", dts, device['manufacturer'].lower())    
+        dts = replace("DEVICE", dts, device['device'].lower())  
+        dts = replace("BUS", dts, device['bus'].lower())  
+        dts = replace("DESC", dts, f"Driver for {device['manufacturer']} {device['device'].lower()}")  
+        with open(f"{root}/zephyr/{root}/dts/bindings/{device['manufacturer'].lower()},{device['device'].lower()}.yaml", "w") as f:
+            f.write(dts.strip())
 
-        # Add module
+        #############################################################
+        # Module 
+        #############################################################
         module = frag_module
-        module = replace("DEVICE", module, device['manufacturer'].lower())    
-        module = replace("MANU", module, device['device'].lower())  
-        module = replace("BUS", module, device['bus'].lower())  
-        module = replace("DESC", module, f"Driver for {device['manufacturer']} {device['device'].lower()} ")  
-        with open(f"{root}/zephyr/zephyr/module.yaml", "w") as f:
-            f.write(module)
-
-
+        module = replace("DEVICE", module, device['device'].lower()) 
+        with open(f"{root}/zephyr/{root}/zephyr/module.yaml", "w") as f:
+            f.write(module.strip())
 
         ############################################################
         #  HAL Generation
         ############################################################ 
         root = f"{device['device']}".lower()
-        os.makedirs(f"{root}/hal/", exist_ok=True); 
+        os.makedirs(f"{root}/hal/{root}/", exist_ok=True); 
         
         ############################################################
         #  Header
         ############################################################ 
         with open("tmpl_hal.h", "r") as f:
             header = f.read(); 
-    
         header = replace("LOGO", header, ascii_logo.strip())
         header = replace("DESCRIPTION", header, f"Driver for {device['manufacturer']} {device['device']}")
         header = replace("COPYRIGHT", header, device['copyright'])
@@ -340,7 +348,9 @@ if __name__ == "__main__":
         header = replace("DEVICE", header, f"{device['device']}".lower())
         header = replace("TYPEDEFS", header, typedefs.strip())
         header = replace("PROTOTYPES", header, h_protos)
-        with open(f"{root}/hal/{root}.h", "w") as f:
+        header = replace("MANU", header, device['manufacturer'].upper())
+        header = replace("DEVICE_U", header, device['device'].upper())
+        with open(f"{root}/hal/{root}/{root}.h", "w") as f:
             f.write(header)
 
         ############################################################
@@ -348,18 +358,13 @@ if __name__ == "__main__":
         ############################################################ 
         with open("tmpl_hal.c", "r") as f:
             source = f.read(); 
-    
-        
         source = replace("LOGO", source, ascii_logo.strip())
         source = replace("DESCRIPTION", source, f"Driver for {device['manufacturer']} {device['device']}")
         source = replace("COPYRIGHT", source, device['copyright'])
         source = replace("VERSION", source, device['version'])
         source = replace("DEVICE", source, f"{device['device']}".lower())
-     
         source = replace("FUNCTIONS", source, h_funcs.strip())
-
-
-        with open(f"{root}/hal/{root}.c", "w") as f:
+        with open(f"{root}/hal/{root}/{root}.c", "w") as f:
             f.write(source)
     
         print(f"Complete")

@@ -26,6 +26,7 @@ typedef struct
 {
     int32_t (*write)(uint8_t addr, uint8_t* data, uint32_t size); 
     int32_t (*read)(uint8_t addr, uint8_t* data, uint32_t size); 
+    uint8_t dev_addr; 
 } hal_i2c_t; 
 
 

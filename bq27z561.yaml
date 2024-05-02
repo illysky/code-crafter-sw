@@ -1,0 +1,560 @@
+# Key-value pairs
+device: BQ27Z561
+manufacturer: TI
+version: v1.0.0
+author: Code Crafter
+copyright: Copyright (c) 2023 Inova Design Solutions Ltd
+bus: i2c
+api: sensor
+
+registers:
+  - name: Manufacturer Access
+    address: 0x00
+    write: true
+    bitfield:
+    - RESERVED:4
+    - LDMD:1
+    - RDIS:1
+    - VOK:1
+    - QEN:1
+  
+  - name: Control Status
+    address: 0x01
+    write: true
+    bitfield:
+    - RESERVED:1
+    - FAS:2
+    - RESERVED:3
+    - CHECK_SUM:1
+    - RESERVED:1
+  
+  - name: AT Rate L
+    address: 0x02
+    write: true
+    bitfield:
+    - AT_RATE:8
+  
+  - name: AT Rate M
+    address: 0x03
+    write: true
+    bitfield:
+    - AT_RATE:8
+  
+  - name: At Rate Time To Empty L
+    address: 0x04
+    write: true
+    bitfield:
+    - AT_RATE_TIME_TO_EMPTY:8
+  
+  - name: At Rate Time To Empty M
+    address: 0x05
+    write: true
+    bitfield:
+    - AT_RATE_TIME_TO_EMPTY:8
+  
+  - name: Temperature L
+    address: 0x06
+    write: true
+    bitfield:
+    - TEMP:8
+  
+  - name: Temperature M
+    address: 0x07
+    write: true
+    bitfield:
+    - TEMP:8
+  
+  - name: Voltage L
+    address: 0x08
+    write: true
+    bitfield:
+    - VOLTAGE:8
+  
+  - name: Voltage M
+    address: 0x09
+    write: true
+    bitfield:
+    - VOLTAGE:8
+  
+  - name: Battery Status L
+    address: 0x0A
+    write: true
+    bitfield:
+    - INIT:1
+    - DSG:1
+    - FC:1
+    - FD:1
+    - RESERVED:4
+  
+  - name: Battery Status M
+    address: 0x0B
+    write: true
+    bitfield:
+    - RESERVED:1
+    - TCA:1
+    - RESERVED:2
+    - TDA:1
+    - RESERVED:1
+    - RCA:1
+    - RESERVED:1
+  
+  - name: Current L
+    address: 0x0C
+    write: true
+    bitfield:
+    - CURRENT:8
+  
+  - name: Current M
+    address: 0x0D
+    write: true
+    bitfield:
+    - CURRENT:8
+  
+  - name: Remaining Capacity L
+    address: 0x10
+    write: true
+    bitfield:
+    - REMAINING_CAP:8
+  
+  - name: Remaining Capacity M
+    address: 0x11
+    write: true
+    bitfield:
+    - REMAINING_CAP:8
+  
+  - name: Full Charge Capacity L
+    address: 0x12
+    write: true
+    bitfield:
+    - FULL_CHARGE_CAP:8
+  
+  - name: Full Charge Capacity M
+    address: 0x13
+    write: true
+    bitfield:
+    - FULL_CHARGE_CAP:8
+  
+  - name: Average Current L
+    address: 0x14
+    write: true
+    bitfield:
+    - AVG_CURRENT:8
+  
+  - name: Average Current M
+    address: 0x15
+    write: true
+    bitfield:
+    - AVG_CURRENT:8
+  
+  - name: Average Time to Empty L
+    address: 0x16
+    write: true
+    bitfield:
+    - AVG_TIME_EMPTY:8
+  
+  - name: Average Time to Empty M
+    address: 0x17
+    write: true
+    bitfield:
+    - AVG_TIME_EMPTY:8
+  
+  - name: Average Time To Full L
+    address: 0x18
+    write: true
+    bitfield:
+    - AVG_TIME_FULL:8
+  
+  - name: Average Time To Full M
+    address: 0x19
+    write: true
+    bitfield:
+    - AVG_TIME_FULL:8
+  
+  - name: Max Load Current L
+    address: 0x1E
+    write: true
+    bitfield:
+    - MAX_LOAD_CURRENT:8
+  
+  - name: Max Load Current M
+    address: 0x1F
+    write: true
+    bitfield:
+    - MAX_LOAD_CURRENT:8
+  
+  - name: Max Load Time To Empty L
+    address: 0x20
+    write: true
+    bitfield:
+    - MAX_LOAD_TIME_EMPTY:8
+  
+  - name: Max Load Time To Empty M
+    address: 0x21
+    write: true
+    bitfield:
+    - MAX_LOAD_TIME_EMPTY:8
+  
+  - name: Average Power L
+    address: 0x22
+    write: true
+    bitfield:
+    - AVG_POWER:8
+  
+  - name: Average Power M
+    address: 0x23
+    write: true
+    bitfield:
+    - AVG_POWER:8
+  
+  - name: BTPD Dischage Set L
+    address: 0x24
+    write: true
+    bitfield:
+    - BTPD_DIS_SET:8
+  
+  - name: BTPD Dischage Set M
+    address: 0x25
+    write: true
+    bitfield:
+    - BTPD_DIS_SET:8
+  
+  - name: BPT Charge Set L
+    address: 0x26
+    write: true
+    bitfield:
+    - BTPD_CHARGE_SET:8
+  
+  - name: BPT Charge Set M
+    address: 0x27
+    write: true
+    bitfield:
+    - BTPD_CHARGE_SET:8
+  
+  - name: Internal Temperature L
+    address: 0x28
+    write: true
+    bitfield:
+    - INT_TEMP:8
+  
+  - name: Internal Temperature M
+    address: 0x29
+    write: true
+    bitfield:
+    - INT_TEMP:8
+  
+  - name: Cycle Count L
+    address: 0x2A
+    write: true
+    bitfield:
+    - CYCLE_COUNT:8
+  
+  - name: Cycle Count M
+    address: 0x2B
+    write: true
+    bitfield:
+    - CYCLE_COUNT:8
+  
+  - name: Relative State of Charge L
+    address: 0x2C
+    write: true
+    bitfield:
+    - REL_SOC:8
+  
+  - name: Relative State of Charge M
+    address: 0x2D
+    write: true
+    bitfield:
+    - REL_SOC:8
+  
+  - name: State of Health L
+    address: 0x2E
+    write: true
+    bitfield:
+    - STATE_HEALTH:8
+  
+  - name: State of Health M
+    address: 0x2F
+    write: true
+    bitfield:
+    - STATE_HEALTH:8
+  
+  - name: Charging Voltage L
+    address: 0x30
+    write: true
+    bitfield:
+    - CHARGE_VOL:8
+  
+  - name: Charging Voltage M
+    address: 0x31
+    write: true
+    bitfield:
+    - CHARGE_VOL:8
+  
+  - name: Charging Current L
+    address: 0x32
+    write: true
+    bitfield:
+    - CHAGE_CURR:8
+  
+  - name: Charging Current M
+    address: 0x33
+    write: true
+    bitfield:
+    - CHAGE_CURR:8
+  
+  - name: Terminate Voltage L
+    address: 0x34
+    write: true
+    bitfield:
+    - TERM_VOL:8
+  
+  - name: Terminate Voltage M
+    address: 0x35
+    write: true
+    bitfield:
+    - TERM_VOL:8
+  
+  - name: Timestamp Upper L
+    address: 0x36
+    write: true
+    bitfield:
+    - TIMESTAMP_UPPER:8
+  
+  - name: Timestamp Upper M
+    address: 0x37
+    write: true
+    bitfield:
+    - TIMESTAMP_UPPER:8
+  
+  - name: Timestamp Lower L
+    address: 0x38
+    write: true
+    bitfield:
+    - TIMESTAMP_LOWER:8
+  
+  - name: Timestamp Lower M
+    address: 0x39
+    write: true
+    bitfield:
+    - TIMESTAMP_LOWER:8
+  
+  - name: QMax Cycles L
+    address: 0x3A
+    write: true
+    bitfield:
+    - QMAX_CYCLES:8
+  
+  - name: QMax Cycles M
+    address: 0x3B
+    write: true
+    bitfield:
+    - QMAX_CYCLES:8
+  
+  - name: Design Capacity L
+    address: 0x3C
+    write: true
+    bitfield:
+    - DES_CAP:8
+  
+  - name: Design Capacity M
+    address: 0x3D
+    write: true
+    bitfield:
+    - DES_CAP:8
+  
+  - name: Alt Manufacturer Access L
+    address: 0x3E
+    write: true
+    bitfield:
+    - ALT_MANU_ACC:8
+  
+  - name: Alt Manufacturer Access M
+    address: 0x3F
+    write: true
+    bitfield:
+    - ALT_MANU_ACC:8
+  
+  - name: MAC Data L
+    address: 0x40
+    write: true
+    bitfield:
+    - MAC_DATA:8
+  
+  - name: MAC Data M
+    address: 0x5F
+    write: true
+    bitfield:
+    - MAC_DATA:8
+  
+  - name: MAC Data Sum
+    address: 0x60
+    write: true
+    bitfield:
+    - MAC_DATA_SUM:8
+  
+  - name: MAC Data Length
+    address: 0x61
+    write: true
+    bitfield:
+    - MAC_DATA_LEN:8
+  
+  - name: Voltage Hi Set Threshold L
+    address: 0x62
+    write: true
+    bitfield:
+    - VOLT_HI_SET_THR:8
+  
+  - name: Voltage Hi Set Threshold M
+    address: 0x63
+    write: true
+    bitfield:
+    - VOLT_HI_SET_THR:8
+  
+  - name: Voltage Hi Clear Threshold L
+    address: 0x64
+    write: true
+    bitfield:
+    - VOLT_HI_CLEAR_THR:8
+  
+  - name: Voltage Hi Clear Threshold M
+    address: 0x65
+    write: true
+    bitfield:
+    - VOLT_HI_CLEAR_THR:8
+  
+  - name: Voltage Low Set Threshold L
+    address: 0x66
+    write: true
+    bitfield:
+    - VOLT_LOW_SET_THR:8
+  
+  - name: Voltage Low Set Threshold M
+    address: 0x67
+    write: true
+    bitfield:
+    - VOLT_LOW_SET_THR:8
+  
+  - name: Voltage Low Clear Threshold L
+    address: 0x68
+    write: true
+    bitfield:
+    - VOLT_LOW_CLEAR_THR:8
+  
+  - name: Voltage Low Clear Threshold M
+    address: 0x69
+    write: true
+    bitfield:
+    - VOLT_LOW_CLEAR_THR:8
+  
+  - name: Temperature Hi Set Threshold
+    address: 0x6A
+    write: true
+    bitfield:
+    - TEMP_HI_SET_THR:8
+  
+  - name: Temperature Hi Clear Threshold
+    address: 0x6B
+    write: true
+    bitfield:
+    - TEMP_HI_CLEAR_THR:8
+  
+  - name: Temperature Low Set Threshold
+    address: 0x6C
+    write: true
+    bitfield:
+    - TEMP_LOW_SET_THR:8
+  
+  - name: Temperature Low Clear Threshold
+    address: 0x6D
+    write: true
+    bitfield:
+    - TEMP_LOW_CLEAR_THR:8
+  
+  - name: Interrupt Status
+    address: 0x6E
+    write: true
+    bitfield:
+    - RESERVED:3
+    - SOC_DELTA:1
+    - TEMP_LO:1
+    - TEMP_HI:1
+    - VOLT_LO:1
+    - VOLT_HI:1
+  
+  - name: SOC Delta Set Threshold
+    address: 0x6F
+    write: true
+    bitfield:
+    - SOC_DELTA_SET_THR:8
+  
+  - name: Sus Turbo Power L
+    address: 0x70
+    write: true
+    bitfield:
+    - SUS_TURBO_PWR:8
+  
+  - name: Sus Turbo Power M
+    address: 0x71
+    write: true
+    bitfield:
+    - SUS_TURBO_PWR:8
+  
+  - name: Max Turbo Power L
+    address: 0x72
+    write: true
+    bitfield:
+    - MAX_TURBO_PWR:8
+  
+  - name: Max Turbo Power M
+    address: 0x73
+    write: true
+    bitfield:
+    - MAX_TURBO_PWR:8
+  
+  - name: Sus Turbo Current L
+    address: 0x74
+    write: true
+    bitfield:
+    - SUS_TURBO_CURR:8
+  
+  - name: Sus Turbo Current M
+    address: 0x75
+    write: true
+    bitfield:
+    - SUS_TURBO_CURR:8
+  
+  - name: Max Turbo Current L
+    address: 0x76
+    write: true
+    bitfield:
+    - MAX_TURBO_CURR:8
+  
+  - name: Max Turbo Current M
+    address: 0x77
+    write: true
+    bitfield:
+    - MAX_TURBO_CURR:8
+  
+  - name: Turbo System Resistance L
+    address: 0x78
+    write: true
+    bitfield:
+    - TURBO_SYS_R:8
+  
+  - name: Turbo System Resistance M
+    address: 0x79
+    write: true
+    bitfield:
+    - TURBO_SYS_R:8
+  
+  - name: Turbo EDV L
+    address: 0x7A
+    write: true
+    bitfield:
+    - TURBO_EDV:8
+  
+  - name: Turbo EDV M
+    address: 0x7B
+    write: true
+    bitfield:
+    - TURBO_EDV:8

@@ -1,0 +1,744 @@
+# Key-value pairs
+device: LSM6DSL
+manufacturer: ST
+version: v1.0.0
+author: Code Crafter
+copyright: Copyright (c) 2023 Inova Design Solutions Ltd
+bus: i2c
+api: sensor
+
+registers:
+  - name: Function access
+    address: 0x01
+    write: true
+    bitfield:
+    - FUNC_CFG_EN:1
+    - RESERVED:1
+    - FUNC_CFG_EN_B:1
+    - RESERVED:5
+  
+  - name: Sensor Time Frame
+    address: 0x04
+    write: true
+    bitfield:
+    - RESERVED:4
+    - TPH:4
+  
+  - name: Sensor Res Ration
+    address: 0x05
+    write: true
+    bitfield:
+    - RESERVED:6
+    - RR:2
+  
+  - name: FIFO 1
+    address: 0x06
+    write: true
+    bitfield:
+    - FTH:8
+  
+  - name: FIFO 2
+    address: 0x07
+    write: true
+    bitfield:
+    - TIMER_PEDO_FIFO_EN:1
+    - TIMER_PEDO_DRDY:1
+    - RESERVED:2
+    - FIFO_TEMP_EN:1
+    - FTH:3
+  
+  - name: FIFO 3
+    address: 0x08
+    write: true
+    bitfield:
+    - RESERVED:2
+    - DEC_FIFO_GYRO:3
+    - DEC_FIFO_XL:3
+  
+  - name: FIFO 4
+    address: 0x09
+    write: true
+    bitfield:
+    - STOP_ON_FTH:1
+    - ONLY_HIGH_DATA:1
+    - DEC_DS4_FIFO:3
+    - DEC_DS3_FIFO:3
+  
+  - name: FIFO 5
+    address: 0x0A
+    write: true
+    bitfield:
+    - RESERVED:1
+    - ODR_FIFO:4
+    - FIFO_MODE:3
+  
+  - name: Data Ready Configure
+    address: 0x0B
+    write: true
+    bitfield:
+    - DRDY_PULSED:1
+    - RESERVED:6
+    - INT2_WRIST_TILT:1
+  
+  - name: Interrupt 1
+    address: 0x0D
+    write: true
+    bitfield:
+    - INT1_STEP_DETECTOR:1
+    - INT1_SIGN_MOT:1
+    - INT1_FULL_FLAG:1
+    - INT1_FIFO_OVR:1
+    - INT1_FTH:1
+    - INT1_BOOT:1
+    - INT1_DRDY_G:1
+    - INT1_DRDY_XL:1
+  
+  - name: Interrupt 2
+    address: 0x0E
+    write: true
+    bitfield:
+    - INT2_STEP_DELTA:1
+    - INT2_STEP_COUNT_OV:1
+    - INT2_FULL_FLAG:1
+    - INT2_FIFO_OVR:1
+    - INT2_FTH:1
+    - INT2_DRDY_TEMP:1
+    - INT2_DRDY_G:1
+    - INT2_DRDY_XL:1
+  
+  - name: Who am I
+    address: 0x0F
+    write: true
+    bitfield:
+    - WHO_AM_I:8
+  
+  - name: Control 1
+    address: 0x10
+    write: true
+    bitfield:
+    - ODR_XL:4
+    - FS_XL:2
+    - LPF1_BW_SEL:1
+    - BW0_XL:1
+  
+  - name: Control 2
+    address: 0x11
+    write: true
+    bitfield:
+    - ODR_G:4
+    - FS_G:2
+    - FS_125:1
+    - RESERVED:1
+  
+  - name: Control 3
+    address: 0x12
+    write: true
+    bitfield:
+    - BOOT:1
+    - BDU:1
+    - H_LACTIVE:1
+    - PP_OD:1
+    - SIM:1
+    - IF_INC:1
+    - BLE:1
+    - SW_RESET:1
+  
+  - name: Control 4
+    address: 0x13
+    write: true
+    bitfield:
+    - DEX_XL_EN:1
+    - SLEEP:1
+    - INT2_ON_INT1:1
+    - DEN_DRDY_INT1:1
+    - DRDY_MASK:1
+    - I2C_DISABLE:1
+    - LPF1_SEL_G:1
+    - RESERVED:1
+  
+  - name: Control 5
+    address: 0x14
+    write: true
+    bitfield:
+    - ROUNDING:3
+    - DEN_LH:1
+    - ST_G:2
+    - ST_XL:2
+  
+  - name: Control 6
+    address: 0x15
+    write: true
+    bitfield:
+    - TRIG_EN:1
+    - LVL_EN:1
+    - LVL2_EN:1
+    - XL_HM_MODE:1
+    - USR_OFF_W:1
+    - RESERVED:1
+    - FTYPE:2
+  
+  - name: Control 7
+    address: 0x16
+    write: true
+    bitfield:
+    - G_HM_MODE:1
+    - HP_EN_G:1
+    - HPM_G:2
+    - RESERVED:1
+    - ROUNDING_STATUS:1
+    - RESERVED:2
+  
+  - name: Control 8
+    address: 0x17
+    write: true
+    bitfield:
+    - LPF2_XL_EN:1
+    - HPCF_XL:2
+    - HP_REF_MODE:1
+    - INPUT_CONPOSITE:1
+    - HP_SLOPE_XL_EN:1
+    - RESERVED:1
+    - LOW_PASS_ON_6D:1
+  
+  - name: Control 9
+    address: 0x18
+    write: true
+    bitfield:
+    - DEN_X:1
+    - DEN_Y:1
+    - DEN_Z:1
+    - DEN_XL_G:1
+    - RESERVED:1
+    - SOFT_EN:1
+    - RESERVED:2
+  
+  - name: Control 10
+    address: 0x19
+    write: true
+    bitfield:
+    - WRIST_TILT_EN:1
+    - RESERVED:1
+    - TIMER_EN:1
+    - PEDO_EN:1
+    - TILT_EN:1
+    - FUNC_EN:1
+    - PEDO_RST_STEP:1
+    - SIGN_MOTION_EN:1
+  
+  - name: Master Config
+    address: 0x1A
+    write: true
+    bitfield:
+    - DRDY_ON_INT1:1
+    - DATA_VALID_SEL_FIFO:1
+    - RESERVED:1
+    - START_CONFIG:1
+    - PULL_UP_EN:1
+    - PASS_THROUGH_MODE:1
+    - IRON_EN:1
+    - MASTER_ON:1
+  
+  - name: Wake Up Source
+    address: 0x1B
+    write: true
+    bitfield:
+    - RESERVED:2
+    - FF_IA:1
+    - SLEEP_STATE_IA:1
+    - WU_IA:1
+    - X_WU:1
+    - Y_WU:1
+    - Z_WU:1
+  
+  - name: Tap Source
+    address: 0x1C
+    write: true
+    bitfield:
+    - RESERVED:1
+    - TAP_IA:1
+    - SINGLE_TAP:1
+    - DOUBLE_TAP:1
+    - TAP_SIGN:1
+    - X_TAP:1
+    - Y_TAP:1
+    - Z_TAP:1
+  
+  - name: D6D Source
+    address: 0x1D
+    write: true
+    bitfield:
+    - DEN_DRDY:1
+    - D6D_IA:1
+    - ZH:1
+    - ZL:1
+    - YH:1
+    - YL:1
+    - XH:1
+    - XL:1
+  
+  - name: Status
+    address: 0x1E
+    write: true
+    bitfield:
+    - RESERVED:5
+    - TDA:1
+    - GDA:1
+    - XLDA:1
+    
+  - name: Out Low
+    address: 0x20
+    write: true
+    bitfield:
+    - TEMP:8
+  
+  - name: Out High
+    address: 0x21
+    write: true
+    bitfield:
+    - TEMP:8
+  
+  - name: X Low G
+    address: 0x22
+    write: true
+    bitfield:
+    - D:8
+  
+  - name: X High G
+    address: 0x23
+    write: true
+    bitfield:
+    - D:8
+  
+  - name: Y Low G
+    address: 0x24
+    write: true
+    bitfield:
+    - D:8
+  
+  - name: Y High G
+    address: 0x25
+    write: true
+    bitfield:
+    - D:8
+  
+  - name: Z Low G
+    address: 0x26
+    write: true
+    bitfield:
+    - D:8
+  
+  - name: Z High G
+    address: 0x27
+    write: true
+    bitfield:
+    - D:8
+  
+  - name: X Low XL
+    address: 0x28
+    write: true
+    bitfield:
+    - D:8
+  
+  - name: X High XL
+    address: 0x29
+    write: true
+    bitfield:
+    - D:8
+  
+  - name: Y Low XL
+    address: 0x2A
+    write: true
+    bitfield:
+    - D:8
+  
+  - name: Y High XL
+    address: 0x2B
+    write: true
+    bitfield:
+    - D:8
+  
+  - name: Z Low XL
+    address: 0x2C
+    write: true
+    bitfield:
+    - D:8
+  
+  - name: Z High XL
+    address: 0x2D
+    write: true
+    bitfield:
+    - D:8
+  
+  - name: Sensor Hub 1
+    address: 0x2E
+    write: true
+    bitfield:
+    - SHUB1:8
+  
+  - name: Sensor Hub 2
+    address: 0x2F
+    write: true
+    bitfield:
+    - SHUB2:8
+  
+  - name: Sensor Hub 3
+    address: 0x30
+    write: true
+    bitfield:
+    - SHUB3:8
+  
+  - name: Sensor Hub 4
+    address: 0x31
+    write: true
+    bitfield:
+    - SHUB4:8
+  
+  - name: Sensor Hub 5
+    address: 0x32
+    write: true
+    bitfield:
+    - SHUB5:8
+  
+  - name: Sensor Hub 6
+    address: 0x33
+    write: true
+    bitfield:
+    - SHUB6:8
+  
+  - name: Sensor Hub 7
+    address: 0x34
+    write: true
+    write: true
+    bitfield:
+    - SHUB7:8
+  
+  - name: Sensor Hub 8
+    address: 0x35
+    write: true
+    bitfield:
+    - SHUB8:8
+  
+  - name: Sensor Hub 9
+    address: 0x36
+    write: true
+    bitfield:
+    - SHUB9:8
+  
+  - name: Sensor Hub 10
+    address: 0x37
+    write: true
+    bitfield:
+    - SHUB10:8
+  
+  - name: Sensor Hub 11
+    address: 0x38
+    write: true
+    bitfield:
+    - SHUB11:8
+  
+  - name: Sensor Hub 12
+    address: 0x39
+    write: true
+    bitfield:
+    - SHUB12:8
+  
+  - name: FIFO Status 1
+    address: 0x3A
+    write: true
+    bitfield:
+    - DIFF_FIFO:8
+  
+  - name: FIFO Status 2
+    address: 0x3B
+    write: true
+    bitfield:
+    - WATERM:1
+    - OVER_RUN:1
+    - FIFO_FULL_SMART:1
+    - FIFO_EMPTY:1
+    - RESERVED:1
+    - DIFF_FIFO:3
+  
+  - name: FIFO Status 3
+    address: 0x3C
+    write: true
+    bitfield:
+    - FIFO_PATTERN:8
+  
+  - name: FIFO Status 4
+    address: 0x3D
+    write: true
+    bitfield:
+    - FIFO_PATTERN:8
+  
+  - name: FIFO Data Low
+    address: 0x3E
+    write: true
+    bitfield:
+    - DATA_OUT_FIFO_L:8
+  
+  - name: FIFO Data High
+    address: 0x3F
+    write: true
+    bitfield:
+    - DATA_OUT_FIFO_H:8
+  
+  - name: Timestamp 0
+    address: 0x40
+    write: true
+    bitfield:
+    - TIMESTAMP0:8
+  
+  - name: Timestamp 1
+    address: 0x41
+    write: true
+    bitfield:
+    - TIMESTAMP1:8
+  
+  - name: Timestamp 2
+    address: 0x42
+    write: true
+    bitfield:
+    - TIMESTAMP2:8
+  
+  - name: Step Timestamp Low
+    address: 0x49
+    write: true
+    bitfield:
+    - STEP_TIMESTAMP_L:8
+  
+  - name: Step Timestamp High
+    address: 0x4A
+    write: true
+    bitfield:
+    - STEP_TIMESTAMP_H:8
+  
+  - name: Step Counter Low
+    address: 0x4B
+    write: true
+    bitfield:
+    - STEP_COUNTER_L:8
+  
+  - name: Step Counter High
+    address: 0x4C
+    write: true
+    bitfield:
+    - STEP_COUNTER_H:8
+  
+  - name: Sensor Hub 13
+    address: 0x4D
+    write: true
+    bitfield:
+    - SHUB13:8
+  
+  - name: Sensor Hub 14
+    address: 0x4E
+    write: true
+    bitfield:
+    - SHUB14:8
+  
+  - name: Sensor Hub 15
+    address: 0x4F
+    write: true
+    bitfield:
+    - SHUB15:8
+  
+  - name: Sensor Hub 16
+    address: 0x50
+    write: true
+    bitfield:
+    - SHUB16:8
+  
+  - name: Sensor Hub 17
+    address: 0x51
+    write: true
+    bitfield:
+    - SHUB17:8
+  
+  - name: Sensor Hub 18
+    address: 0x52
+    write: true
+    bitfield:
+    - SHUB18:8
+  
+  - name: Function Source 1
+    address: 0x53
+    write: true
+    bitfield:
+    - STEP_COUNT_DELTA_IA:1
+    - SIGN_MOTION_IA:1
+    - TILT_IA:1
+    - STEP_DETECTED:1
+    - STEP_OVERFLOW:1
+    - HI_FAIL:1
+    - SI_END_OP:1
+    - SENSORHUB_END_OP:1
+  
+  - name: Function Source 2
+    address: 0x54
+    write: true
+    bitfield:
+    - RESERVED:1
+    - SLAVE3_NACK:1
+    - SLAVE2_NACK:1
+    - SLAVE1_NACK:1
+    - SLAVE0_NACK:1
+    - RESERVED:2
+    - WRIST_TILT_IA:1
+  
+  - name: Wrist Tilt IA
+    address: 0x55
+    write: true
+    bitfield:
+    - WRIST_TILT_IA_XPOS:1
+    - WRIST_TILT_IA_XNEG:1
+    - WRIST_TILT_IA_YPOS:1
+    - WRIST_TILT_IA_YNEG:1
+    - WRIST_TILT_IA_ZPOS:1
+    - WRIST_TILT_IA_ZNEG:1
+    - RESERVED:2
+  
+  - name: Tap Config
+    address: 0x58
+    write: true
+    bitfield:
+    - INTERRUPTS_ENABLE:1
+    - INACT_EN:2
+    - SLOPE_FDS:1
+    - TAP_X_EN:1
+    - TAP_Y_EN:1
+    - TAP_Z_EN:1
+    - LIR:1
+  
+  - name: Tap Threshold 6D
+    address: 0x59
+    write: true
+    bitfield:
+    - D4D_EN:1
+    - SIXD_THS:2
+    - TAP_THS:5
+  
+  - name: Tap Recongition Setting
+    address: 0x5A
+    write: true
+    bitfield:
+    - DUR:4
+    - QUIET:2
+    - SHOCK:2
+  
+  - name: Wake Up THS
+    address: 0x5B
+    write: true
+    bitfield:
+    - SINGLE_DOUBLE_TAP:1
+    - RESERVED:1
+    - WK_THS:6
+  
+  - name: Wake Up Duration
+    address: 0x5C
+    write: true
+    bitfield:
+    - FF_DUR5:1
+    - WAKE_DUR:2
+    - TIMER_HR:1
+    - SLEEP_DUR:4
+  
+  - name: Free Fall
+    address: 0x5D
+    write: true
+    bitfield:
+    - FF_DUR:5
+    - FF_THS:3
+  
+  - name: MD1 Config
+    address: 0x5E
+    write: true
+    bitfield:
+    - INT1_INACT_STATE:1
+    - INT1_SINGLE_TAP:1
+    - INT1_WU:1
+    - INT1_FF:1
+    - INT1_DOUBLE_TAP:1
+    - INT1_6D:1
+    - INT1_TILT:1
+    - INT1_TIMER:1
+  
+  - name: MD2 Config
+    address: 0x5F
+    write: true
+    bitfield:
+    - INT2_INACT_STATE:1
+    - INT2_SINGLE_TAP:1
+    - INT2_WU:1
+    - INT2_FF:1
+    - INT2_DOUBLE_TAP:1
+    - INT2_6D:1
+    - INT2_TILT:1
+    - INT2_IRON:1
+  
+  - name: Master Command Code
+    address: 0x60
+    write: true
+    bitfield:
+    - MASTER_CMD_CODE:8
+  
+  - name: Sensor Sync Error
+    address: 0x61
+    write: true
+    bitfield:
+    - ERROR_CODE:8
+  
+  - name: X Mag Raw Low
+    address: 0x66
+    write: true
+    bitfield:
+    - D:8
+  
+  - name: X Mag Raw High
+    address: 0x67
+    write: true
+    bitfield:
+    - D:8
+  
+  - name: Y Mag Raw Low
+    address: 0x68
+    write: true
+    bitfield:
+    - D:8
+  
+  - name: Y Mag Raw High
+    address: 0x69
+    write: true
+    bitfield:
+    - D:8
+  
+  - name: Z Mag Raw Low
+    address: 0x6A
+    write: true
+    bitfield:
+    - D:8
+  
+  - name: Z Mag Raw High
+    address: 0x6B
+    write: true
+    bitfield:
+    - D:8
+  
+  - name: X User Offset
+    address: 0x73
+    write: true
+    bitfield:
+    - X_OFS_USR:8
+  
+  - name: Y User Offset
+    address: 0x74
+    write: true
+    bitfield:
+    - Y_OFS_USR:8
+  
+  - name: Z User Offset
+    address: 0x75
+    write: true
+    bitfield:
+    - Z_OFS_USR:8
+  

@@ -17,6 +17,7 @@
 #include <zephyr/kernel.h>
 #include <zephyr/drivers/{##_BUS_##}.h>
 #include <zephyr/drivers/gpio.h>
+#include <zephyr/logging/log.h>
 #include "{##_DEVICE_LOWER_##}.h"
 
 LOG_MODULE_REGISTER({##_DEVICE_LOWER_##}, CONFIG_{##_API_U_##}_LOG_LEVEL);
@@ -81,10 +82,7 @@ static int {##_DEVICE_LOWER_##}_init(const struct device *dev)
 // Instantiation 
 // ##################################################################
 #define {##_DEVICE_UPPER_##}_INIT(inst) \
-	static const struct {##_DEVICE_LOWER_##}_config {##_DEVICE_LOWER_##}_config_##inst = \
-	{ \
-		.i2c = I2C_DT_SPEC_INST_GET(inst), \
-	}; \
+	static const struct {##_DEVICE_LOWER_##}_config {##_DEVICE_LOWER_##}_config_##inst = {.i2c = I2C_DT_SPEC_INST_GET(inst)}\
+	static struct {##_DEVICE_LOWER_##}_data {##_DEVICE_LOWER_##}_data_##inst;	\
 	DEVICE_DT_INST_DEFINE(inst, {##_DEVICE_LOWER_##}_init, NULL, &{##_DEVICE_LOWER_##}_data_##inst, &{##_DEVICE_LOWER_##}_config_##inst, POST_KERNEL, CONFIG_{##_API_UPPER_##}_INIT_PRIORITY, &{##_DEVICE_LOWER_##}_api);
-
 DT_INST_FOREACH_STATUS_OKAY({##_DEVICE_UPPER_##}_INIT)
