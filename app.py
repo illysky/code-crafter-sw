@@ -2,6 +2,7 @@ from datetime import datetime
 import yaml
 import re
 import os
+import sys
 
 
 ascii_logo = \
@@ -20,7 +21,7 @@ frag_func_zephyr = \
 // ##################################################################
 // {##_FUNC_##}_{##_WR_##}
 // ##################################################################
-static int32_t {##_FUNC_##}_{##_WR_##}(const struct device *dev, {##_TYPE_##} *buf)
+int32_t {##_FUNC_##}_{##_WR_##}(const struct device *dev, {##_TYPE_##} *buf)
 {
     return i2c_burst_{##_WR_##}_dt(dev, (const uint8_t*)buf->val, {##_SIZE_##}); 
 }
@@ -76,6 +77,29 @@ config {##_DEVICE_UPPER_##}
 	  Enable {##_DEVICE_UPPER_##} {##_API_UPPER_##} driver.
 '''
 
+##################################################################
+frag_dts = \
+'''
+name: {##_DEVICE_UPPER_##}
+
+build:
+  cmake: .
+  kconfig: Kconfig
+
+  settings:
+    dts_root: .
+'''
+
+##################################################################
+frag_module = \
+'''  
+description: {##_DESC_##}
+compatible: "{##_MANU_##},{##_DEVICE_##}"
+# Add properties includes manually
+include: [{##_BUS_##}-device.yaml]
+# Add properties manually
+properties:
+'''
 
 ##################################################################
 def get_api (name):
@@ -100,8 +124,22 @@ def replace (marker, snip, str):
 if __name__ == "__main__":
 ##################################################################
     
+    print("###########################################")
+    print("# Code Crafter v2.0.0")
+    print("###########################################")
+
+
+    if len(sys.argv) > 1:
+        # The first argument (sys.argv[0]) is the script name itself
+        # The actual arguments start from sys.argv[1]
+        filename = sys.argv[1]
+        print(f"Generating source code for {filename}")
+    else:
+        print(f"Error: no device yaml has been provided")
+        exit(1)
+
     # Open the YAML file
-    with open("test.yaml", "r") as file_yaml:
+    with open(filename, "r") as file_yaml:
         device = yaml.safe_load(file_yaml)
         
         ############################################################
@@ -112,6 +150,8 @@ if __name__ == "__main__":
         z_protos = ""
         h_funcs = ""
         h_protos = ""
+
+        
         for r in device['registers']:
             
             ################################################
@@ -197,6 +237,9 @@ if __name__ == "__main__":
                 h_protos+=  func.split("\n")[4].strip() +";\n"
 
 
+        ############################################################
+        #  Zephyr Generation
+        ############################################################ 
         root = f"{device['device']}".lower()
         os.makedirs(f"{root}/zephyr/", exist_ok=True); 
         os.makedirs(f"{root}/zephyr/dts/bindings", exist_ok=True); 
@@ -255,15 +298,68 @@ if __name__ == "__main__":
         kconfig = replace("API_UPPER", kconfig, device['api'].upper())
         kconfig = replace("MANU", kconfig, device['manufacturer'].upper())
 
+        # Add dts bindings
         with open(f"{root}/zephyr/Kconfig", "w") as f:
             f.write(kconfig)
 
-        with open(f"{root}/zephyr/dts/bindings/{device['manufacturer'].lower()},{device['device'].lower()}.yaml", "w") as f:
-            pass
-
-        with open(f"{root}/zephyr/zephyr/module.yaml", "w") as f:
-            pass
-
-
-
         # Add dts bindings
+
+         # Add kconfig file 
+        dts = frag_dts
+        dts = replace("DEVICE_UPPER", dts, device['device'].lower()) 
+        with open(f"{root}/zephyr/dts/bindings/{device['manufacturer'].lower()},{device['device'].lower()}.yaml", "w") as f:
+            f.write(dts)
+
+        # Add module
+        module = frag_module
+        module = replace("DEVICE", module, device['manufacturer'].lower())    
+        module = replace("MANU", module, device['device'].lower())  
+        module = replace("BUS", module, device['bus'].lower())  
+        module = replace("DESC", module, f"Driver for {device['manufacturer']} {device['device'].lower()} ")  
+        with open(f"{root}/zephyr/zephyr/module.yaml", "w") as f:
+            f.write(module)
+
+
+
+        ############################################################
+        #  HAL Generation
+        ############################################################ 
+        root = f"{device['device']}".lower()
+        os.makedirs(f"{root}/hal/", exist_ok=True); 
+        
+        ############################################################
+        #  Header
+        ############################################################ 
+        with open("tmpl_hal.h", "r") as f:
+            header = f.read(); 
+    
+        header = replace("LOGO", header, ascii_logo.strip())
+        header = replace("DESCRIPTION", header, f"Driver for {device['manufacturer']} {device['device']}")
+        header = replace("COPYRIGHT", header, device['copyright'])
+        header = replace("VERSION", header, device['version'])
+        header = replace("DEVICE", header, f"{device['device']}".lower())
+        header = replace("TYPEDEFS", header, typedefs.strip())
+        header = replace("PROTOTYPES", header, h_protos)
+        with open(f"{root}/hal/{root}.h", "w") as f:
+            f.write(header)
+
+        ############################################################
+        #  Header
+        ############################################################ 
+        with open("tmpl_hal.c", "r") as f:
+            source = f.read(); 
+    
+        
+        source = replace("LOGO", source, ascii_logo.strip())
+        source = replace("DESCRIPTION", source, f"Driver for {device['manufacturer']} {device['device']}")
+        source = replace("COPYRIGHT", source, device['copyright'])
+        source = replace("VERSION", source, device['version'])
+        source = replace("DEVICE", source, f"{device['device']}".lower())
+     
+        source = replace("FUNCTIONS", source, h_funcs.strip())
+
+
+        with open(f"{root}/hal/{root}.c", "w") as f:
+            f.write(source)
+    
+        print(f"Complete")

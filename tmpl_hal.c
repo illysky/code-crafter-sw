@@ -1,5 +1,6 @@
 /*
 {##_LOGO_##}
+
 {##_DESCRIPTION_##} {##_VERSION_##}
 {##_COPYRIGHT_##}
 */  
@@ -10,8 +11,14 @@
 #include <stdlib.h>
 
 #include "hal.h"
-#include "{##_MANU_##}_{##_DEVICE_##}.h"
+#include "{##_DEVICE_##}.h"
 
 {##_FUNCTIONS_##}
 
-{##_INSTA_##}
+// ##################################################################
+// {##_DEVICE_##}_init
+// ##################################################################
+int32_t {##_DEVICE_##}_init (hal_i2c_t *i2c)
+{
+    return 0; 
+}
