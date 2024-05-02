@@ -99,7 +99,7 @@ compatible: "{##_MANU_##},{##_DEVICE_##}"
 # Add properties includes manually
 include: [{##_BUS_##}-device.yaml]
 # Add properties manually
-properties:
+# properties:
 '''
 
 ##################################################################
@@ -160,6 +160,7 @@ if __name__ == "__main__":
             # Names
             ################################################
             reg_name = f"{device['device'].upper()}_{r['name'].replace(' ', '_').upper()}"
+            reg_name = reg_name.replace('-', '_')
             reg_addr = f"{reg_name}_ADDR 0x{r['address']:02X}"
             reg_typedef = f"{reg_name.lower()}_t"
  
