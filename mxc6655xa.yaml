@@ -1,0 +1,130 @@
+# Key-value pairs
+device: mxc6655xa
+manufacturer: Memsic
+version: v1.0.0
+author: Code Crafter
+copyright: Copyright (c) 2023 Illysky Ltd
+bus: i2c
+api: sensor
+
+registers:
+  - name: Shake change orientation interrupt
+    address: 0x00
+    write: true 
+    bitfield:
+    - CHORZ:1
+    - CHORXY:1
+    - RESERVED:2
+    - SHYM:1
+    - SHYP:1
+    - SHXM:1 
+    - SHXP:1 
+
+  - name: Data ready interrupt sources
+    address: 0x01
+    write: true 
+    bitfield:
+    - TILT:1
+    - ORZ:1
+    - ORXY:2
+    - RESERVED:3
+    - DRDY:1
+  
+  - name: Instantaneous orientation status
+    address: 0x02
+    write: false 
+    bitfield:
+    - RESERVED:3 
+    - ORD:1
+    - ORIZ:2
+    - ORIXY:2
+
+  - name: X axis acceleration output MSB 
+    address: 0x03
+    write: false 
+    bitfield:
+    - D:8
+  
+  - name: X axis acceleration output LSB 
+    address: 0x04
+    write: false 
+    bitfield:
+    - D:4
+    - RESERVED:4
+
+  - name: Y axis acceleration output MSB 
+    address: 0x05
+    write: false 
+    bitfield:
+    - D:8
+  
+  - name: Y axis acceleration output LSB 
+    address: 0x06
+    write: false 
+    bitfield:
+    - D:4
+    - RESERVED:4
+
+  - name: Z axis acceleration output MSB 
+    address: 0x07
+    write: false 
+    bitfield:
+    - D:8
+  
+  - name: Z axis acceleration output LSB 
+    address: 0x08
+    write: false 
+    bitfield:
+    - D:4
+    - RESERVED:4
+
+  - name: Temperature Output  
+    address: 0x09
+    write: false 
+    bitfield:
+    - D:8
+
+  - name: Shake orientation detection interrupt mask
+    address: 0x0A
+    write: true 
+    bitfield:
+    - ORZE:1
+    - ORXYE:1
+    - RESERVED:2
+    - SHYME:1
+    - SHYPE:1
+    - SHXME:1 
+    - SHXPE:1
+
+  - name: Data ready tilt data ready interrupt mask
+    address: 0x0B
+    write: true 
+    bitfield:
+    - TC:1
+    - RESERVED:6
+    - DRDYE:1
+
+  - name: Orientation shake detection parameters 
+    address: 0x0C
+    write: true  
+    bitfield:
+    - SHM:1
+    - SHTH:3
+    - SHC:2
+    - ORC:2
+  
+  - name: Operating mode control full-scale range
+    address: 0x0D
+    write: true  
+    bitfield: 
+    - ST:1
+    - FSR:2
+    - RESERVED:4
+    - PD:1 
+
+  - name: Who Am I
+    address: 0x0F
+    write: true  
+    bitfield: 
+    - RESERVED:4
+    - ID:4

@@ -170,6 +170,7 @@ if __name__ == "__main__":
             bitfields = ""
             for b in r['bitfield']:
                 field_name, bit_position = b.split(':')
+                field_name = field_name.replace(" ", "_").upper()
                 bits+=int(bit_position); 
                 if field_name == "RESERVED":
                     field_name = ""
