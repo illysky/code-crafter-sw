@@ -19,10 +19,8 @@ extern "C" {
 #include <zephyr/device.h>
 #include <zephyr/devicetree.h>
 #include <zephyr/kernel.h>
-#include <zephyr/drivers/{##_BUS_##}.h>
-#include <zephyr/drivers/gpio.h>
 
-{##_TYPEDEFS_##}
+{##_MACROS_##}
 
 #ifdef __cplusplus
 }

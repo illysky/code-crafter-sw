@@ -1,0 +1,30 @@
+sensor: 
+  name:  sensor_driver_api
+  functions: 
+    - 'static int trigger_set(const struct device *dev, const struct sensor_trigger *trig, sensor_trigger_handler_t handler)'
+    - 'static int attr_set(const struct device *dev, enum sensor_channel chan, enum sensor_attribute attr, const struct sensor_value *val)'
+    - 'static int channel_get(const struct device *dev, enum sensor_channel chan, struct sensor_value *val)'
+    - 'static int sample_fetch(const struct device *dev, enum sensor_channel chan)'
+  includes: 
+    - '#include <zephyr/drivers/sensor.h>'
+    - '#include <zephyr/drivers/gpio.h>'
+
+charger:
+  name:  charger_driver_api
+  functions: 
+    - 'static int get_property(const struct device *dev, charger_prop_t prop, union charger_propval *val)'
+    - 'static int set_property(const struct device *dev, charger_prop_t prop,const union charger_propval *val)'
+  includes: 
+    - '#include <zephyr/drivers/charger.h>'
+    - '#include <zephyr/drivers/gpio.h>'
+
+led:
+  name:  led_driver_api
+  functions: 
+  - 'static int led_blink(const struct device *dev, uint32_t led,uint32_t delay_on, uint32_t delay_off)'
+  - 'static int led_set_brightness(const struct device *dev, uint32_t led, uint8_t value)'
+  - 'static inline int led_off(const struct device *dev, uint32_t led)'
+  - 'static inline int led_on(const struct device *dev, uint32_t led)'
+  includes: 
+    - '#include <zephyr/drivers/led.h>'
+    - '#include <zephyr/drivers/gpio.h>'

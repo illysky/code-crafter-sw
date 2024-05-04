@@ -2,6 +2,7 @@
 {##_LOGO_##}
 
 {##_DESCRIPTION_##} {##_VERSION_##}
+{##_AUTHOR_##}
 {##_COPYRIGHT_##}
 */  
 
@@ -15,11 +16,8 @@
 #include <zephyr/device.h>
 #include <zephyr/devicetree.h>
 #include <zephyr/kernel.h>
-#include <zephyr/drivers/{##_BUS_##}.h>
-#include <zephyr/drivers/gpio.h>
 #include <zephyr/logging/log.h>
-#include <zephyr/drivers/sensor.h>
-#include <zephyr/drivers/charger.h>
+{##_API_INCLUDES_##}
 #include "{##_DEVICE_LOWER_##}.h"
 
 LOG_MODULE_REGISTER({##_DEVICE_LOWER_##}, CONFIG_{##_API_UPPER_##}_LOG_LEVEL);
@@ -48,23 +46,21 @@ struct {##_DEVICE_LOWER_##}_data
 };
 
 // ##################################################################
-// Private Functions 
-// ##################################################################
-{##_FUNCTIONS_##}
-// ##################################################################
-// Driver API Implementation
+// Driver API Implementation Stubs
 // ##################################################################
 // Visit https://docs.zephyrproject.org/latest/develop/api/overview.html 
 // to get the API calls you need to implement for this type of driver
 // eg. sensor or charger. 
 // Update the _driver_api struct accordingly 
 
+{##_API_FUNCTIONS_##}
+
 // ##################################################################
 // Driver API 
 // ##################################################################
-static const struct {##_API_L_##}_driver_api {##_DEVICE_LOWER_##}_api = 
+static const struct {##_API_L_##} {##_DEVICE_LOWER_##}_api = 
 {
-	// Manually add api calls here...
+{##_API_POINTERS_##} 
 };
 
 // ##################################################################
